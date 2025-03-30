@@ -44,16 +44,16 @@
 **q)** Sendo conhecidos os valores de z e w, calcular y:
 
 					    y =  7.x.2-3.x-8.t 
-							______________
-					    		5.(x+1)
+						--------------- 
+					    	     5.(x+1)
 
 sabendo-se que os valores de x e t são assim definidos: 
 
 					    se w>0 ou z<7:  	x=(5w+1)/3 
-										    t=5z+2 y=
+							        t=5z+2 y=
 					    
 					    caso contrário: 	x=5z+2 
-										    t=(5w+1)/3
+								t=(5w+1)/3
 
 **r)** Um banco concederá um crédito especial aos seus clientes, variável com o saldo médio no último ano. Faça um algoritmo que lela o saldo médio de um cliente e calcule o valor do crédito de acordo com a tabela abaixo. Mostre uma mensagem informando o saldo médio e o valor do crédito.
 

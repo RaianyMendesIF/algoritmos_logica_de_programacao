@@ -8,6 +8,6 @@ nota4 = int(input("4º nota: "))
 media = (nota1 + nota2 + nota3 + nota4) / 4
 
 if media >= 6:
-    print("\n Estudante aprovado")
+    print(f"\n Estudante aprovado com media {media}")
 else: 
-    print("\nEstudante reprovado")
+    print(f"\nEstudante reprovado com media {media}")

@@ -10,6 +10,7 @@ LINGUAGEM: Python
 
 ## Laço de repetição
 Também chamados de loops, são comandos que permitem que comandos presentes no bloco sejam repetidos diversas vezes.
+
 ### For
 Necessário ter: Variável de controle, condição de parada e Incrementação da variável de controle 
 ```

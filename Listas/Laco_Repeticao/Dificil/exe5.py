@@ -10,11 +10,8 @@ parte_2 = numero - parte_1
 for i in range(parte_1):
     for j in range(i):
         print(alfabeto[j], end='')
-
-    for k in range(0,i):
-        print(alfabeto[k], end='')
-    
     print(alfabeto[i])
+
 
 for i in range(parte_2-1,-1,-1):
     for j in range(i):

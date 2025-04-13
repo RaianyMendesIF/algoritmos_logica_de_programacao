@@ -14,14 +14,18 @@ for i in range(3, n + 1):
     if primo == True:
         primos.append(i)
 
-
-  
+if n > 1 :
     while resultado != 0:
-        for i in primos:  
+        for i in primos:
             while n % i == 0:
                 resultado = n / i
                 multiplos.append(i)
-                n = resultado
+            else:
+                break
+
+
+else:
+    print("Digite um número inteiro maior que zero!")
 
 print(primos)
 print(multiplos)

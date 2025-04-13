@@ -63,7 +63,7 @@ Explicação: 6 → divisores: 1, 2, 3 (soma: 1+2+3=6)
 ### Exercício 3: Soma da Série Especial
 Crie um programa que calcule o valor da seguinte série até o n-ésimo termo informado
 pelo usuário, usando apenas laços:
-S=1/1+2/3+3/5+4/7+⋯+n/2n−1
+S=/11+2/3+3/5+4/7+⋯+n/2n−1
 
 ### Exercício 4: Triângulo Numérico Invertido
 Faça um programa que, utilizando laços, imprima o seguinte padrão numérico invertido
@@ -87,6 +87,7 @@ Entrada:
 18
 Saída:
 6
+
 
 ## NÍVEL DIFÍCIL
 ### Exercício 1: Pirâmide de Palíndromos

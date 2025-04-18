@@ -1,10 +1,11 @@
+
 n = int(input("Digite um número inteiro positivo: "))
 primos = []
 primo = True
 multiplos = []
 resultado = n
 
-for i in range(3, n + 1):
+for i in range(2, n + 1):
     primo = True
     for j in range(2,i):
 
@@ -14,20 +15,20 @@ for i in range(3, n + 1):
     if primo == True:
         primos.append(i)
 
-if n > 1 :
+
+for i in primos:
     while resultado != 0:
-        for i in primos:
-            while n % i == 0:
-                resultado = n / i
-                multiplos.append(i)
-            else:
-                break
+        if resultado % i == 0:
+            resultado = resultado / i
+            multiplos.append(i)
+        else:
+            break
+        
+            
+for j in multiplos: 
+    print(j, end= ' * ' )
+  
 
 
-else:
-    print("Digite um número inteiro maior que zero!")
-
-print(primos)
-print(multiplos)
 
     

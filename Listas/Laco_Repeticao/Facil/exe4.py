@@ -1,4 +1,5 @@
 numero = int(input("Digite o número limite: "))
 
-for i in range(2, numero + 1 ,2):
-    print(i)
+for i in range(numero+1):
+    if i % 2 == 0:
+        print(i)

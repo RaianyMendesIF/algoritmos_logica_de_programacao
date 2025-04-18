@@ -1,14 +1,12 @@
 numero = int(input("Digite o número para verificar sé é um número perfeito:\n "))
 
 divisores = []
-soma_divisores = 0
 
 for i in range(1,numero):
     if numero % i == 0:
         divisores.append(i)
 
-for i in divisores:
-    soma_divisores += i
+soma_divisores = sum(divisores)
 
 if soma_divisores == numero:
     

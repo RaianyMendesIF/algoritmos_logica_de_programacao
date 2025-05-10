@@ -114,3 +114,19 @@ for i in range(6,0,-1):
 #       *
  
 
+for i in range(1,4):
+    # ----- Parte 1- Vazio --------   
+    vazio = 3-i
+    for j in range(vazio):
+        print(' ',end="")
+    # ----- Parte 1 - Preenchida --------   
+    for k in range(i):
+        print("*", end=" ")
+    # ----- Parte 2 --------       
+    for l in range(0,i-1):
+            print("*", end=" ")
+    print()
+
+#   *
+#  ***
+# *****

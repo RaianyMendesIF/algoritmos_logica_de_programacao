@@ -7,4 +7,4 @@ for i in range(1, numero + 1):
     else:  
         resultado += 1 / i
 
-print(f"Série Harmônica Alternada de {numero} termos: {resultado}")
+print(f"Série Harmônica Alternada: {resultado}")

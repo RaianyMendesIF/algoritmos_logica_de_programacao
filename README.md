@@ -6,6 +6,7 @@ LINGUAGEM: Python
 
 ## Listas
 > Lista 1 - 23/03/2025 (18 exercícios)
+> Lista 2 - XX/XX/2025 (70 exercícios)
 
 
 ## Laço de repetição
@@ -27,7 +28,7 @@ while i <= 10:
 >>> 1 2 3 4 5 6 7 8 9 10
 ```
 
-### Listas
+## Listas
 Coleções heterogêneas de objetos, podem ser qualquer tipo, inclusive outras listas.
 ```
 lista = [1, 2, 3, 4, 5]
@@ -43,19 +44,19 @@ for item in lista:
     print(item)
 ```
 
-# Incluir novo elemento
+### Incluir novo elemento
 lista.append('Guns')
 
-# Trocar o último elemento
+### Trocar o último elemento
 lista[-1] = "Novo elemento na última posição"
 
-# Ordenar
+### Ordenar
 lista.sort()
 
-# Invertr a lista
+### Invertr a lista
 lista.reverse()
 
-# Enumerate
+### Enumerate
 ```
 for i, p in enumerate(lista):
     print(f'Posição {i}, Elemento: {p}')
@@ -64,11 +65,10 @@ for i, p in enumerate(lista):
 
 ## PESQUISA -> Pra que serve, como utilizar, quais são as restrições e casos de uso
 
-# pop
-# remove
-# zip
-# Set : o que ela tem em comun, é mutável, as restrições aplicação
-# frozenset: Imutável ou não, desordenada 
-# união, interseção e diferença 
-# O que range ?
-
+### pop
+### remove
+### zip
+### Set : o que ela tem em comun, é mutável, as restrições aplicação
+### frozenset: Imutável ou não, desordenada 
+### união, interseção e diferença 
+### O que range ?

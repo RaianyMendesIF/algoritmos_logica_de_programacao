@@ -92,3 +92,5 @@ lista = list(tupla) #tuple
 
 #união, interseção e diferença 
 # O que range ?
+
+# tuplas são imutáveis, mais eficientes;

@@ -1,0 +1,1 @@
+# . Divida uma lista em N sublistas de tamanho igual.

@@ -1,0 +1,1 @@
+# Crie uma fun¸c˜ao que agrupe palavras por tamanho em um dicion´ario.

@@ -1,5 +1,5 @@
 from validar import validar_opcao
-from opcoes import Cadastrar
+from opcoes import Cadastrar, Excluir, Consultar
 
 def Menu():
     print('''
@@ -24,11 +24,11 @@ def Menu():
     # elif opcao == 2:
     #     Matricular()
 
-    # elif opcao == 3:
-    #     Excluir()
+    elif opcao == 3:
+        Excluir()
 
-    # elif opcao == 4:
-    #     Consultar()
+    elif opcao == 4:
+        Consultar()
 
     # elif opcao == 5:
     #     Relatorio()

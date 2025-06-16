@@ -1,4 +1,4 @@
-usuarios = [{1000: ['Raiany Vitoria P. Mendes', 'raiany@gmail.com', 'IA e Lógica de programação']}]
+usuarios = [{1000: ['Raiany Vitoria P. Mendes', 'raiany@gmail.com', 'IA e Lógica de programação']},{1001: ['Rian Vitor P. Mendes', 'rian@gmail.com', 'Lógica de programação']}]
 
 def cadastrar_usuario():
     print("_____CADASTRO DE USUÁRIO_____")
@@ -10,7 +10,7 @@ def cadastrar_usuario():
     return print(f'Usuário {nome} cadastrado(a) com sucesso!')
 
 
-def listar_usuario():
+def listar_usuarios():
     print('''\n             USUARIOS''', end='')
     for user in usuarios:
         for i in user.keys():
@@ -24,24 +24,31 @@ def listar_usuario():
     print("\n+-------------------------------+")
 
 
-def lista_vazia(lista):
-     if len(lista) == 0:
+def lista_vazia_usuarios():
+     if len(usuarios) == 0:
           return True
 
 
 def buscar_usuario():
-    if lista_vazia(usuarios):
+    if lista_vazia_usuarios():
              print("\nNão há usuários cadastrados!")
     else:
-        listar_usuario()
-        matricula = int(input("MATRÍCULA: "))
+        listar_usuarios()
+        matricula = int(input("MATRÍCULA USUÁRIO: "))
 
         for user in usuarios:
             for i,key in enumerate(user.keys()):
                 if key == matricula:
                     return i, key, user
         return 
-                
+
+
+def nome_usuario(matricula):
+    for user in usuarios:
+        for key in user.keys():
+            if key == matricula:
+                return user[key][0] 
+
 
 def excluir_usuario():
     user = buscar_usuario()
@@ -66,5 +73,6 @@ def consultar_usuario():
         print("\n+-------------------------------+")
     else:
         print("\nUsuário não identificado, verifique a matrícula e tente novamente!")
+
 
 

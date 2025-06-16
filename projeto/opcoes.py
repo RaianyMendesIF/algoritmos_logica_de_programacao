@@ -1,6 +1,7 @@
 from validar import validar_opcao
-from classes.evento import cadastrar_evento, excluir_evento, consultar_evento
-from classes.usuario import cadastrar_usuario, excluir_usuario, consultar_usuario
+from classes.evento import cadastrar_evento, excluir_evento, consultar_evento, listar_eventos, temas_frequentes
+from classes.usuario import cadastrar_usuario, excluir_usuario, consultar_usuario, listar_usuarios
+from classes.participante import matricular_participante, listar_participantes, ativos_participantes
 
 def Menu2(nome):
     print(f'''
@@ -29,7 +30,7 @@ def Cadastrar():
 
 
 def Matricular():
-    print("Não sei oq fazer ainda!")
+    matricular_participante()
 
 
 def Excluir(): 
@@ -61,4 +62,37 @@ def Consultar():
         return
 
 
+def Relatorio(): 
+    print(f'''
++--------------------------------+
+|           RELATÓRIO            |
++--------------------------------+
+| 1 - Eventos                    |
+| 2 - Usuários                   |
+| 3 - Participantes por evento   |
+| 4 - Participantes mais ativos  |
+| 5 - Temas mais frequentes      |
+| 0 - Voltar                     |
++--------------------------------+   
+                                ''')
+    op = validar_opcao(5)
+
+    if op == 1:
+        listar_eventos()
+
+    elif op == 2:
+        listar_usuarios()
+    
+    elif op == 3:
+        listar_participantes()
+
+    elif op == 4:
+        print(ativos_participantes())
+        
+    
+    elif op == 5:
+        temas_frequentes()
+
+    elif op == 0:
+        exit()
     

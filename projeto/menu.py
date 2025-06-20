@@ -1,5 +1,5 @@
-from validar import validar_opcao
-from opcoes import Cadastrar, Excluir, Matricular, Consultar, Relatorio 
+from utilidades import validar_opcao, clear
+from opcoes import Eventos, Participantes, Relatorios 
 
 def Menu():
     print('''
@@ -7,36 +7,28 @@ def Menu():
 +----------------------------+
 |       MENU DE OPÇÕES       |
 +----------------------------+
-| 1 - Cadastrar              |
-| 2 - Matricular             |
-| 3 - Excluir                |
-| 4 - Consultar              |    
-| 5 - Relatório              |
-| 0 - Sair                   |
+| 1 - EVENTOS                |
+| 2 - PARTICIPANTES          |
+| 3 - RELATÓRIO              |
+| 0 - SAIR                   |
 +----------------------------+   
                                 ''')
       
-    opcao = validar_opcao(5)
-
+    opcao = validar_opcao(6)
+    clear()
+    
     if opcao == 1:
-        Cadastrar()
+        Eventos()
 
     elif opcao == 2:
-        Matricular()
+        Participantes()
 
     elif opcao == 3:
-        Excluir()
-
-    elif opcao == 4:
-        Consultar()
-
-    elif opcao == 5:
-        Relatorio()
+        Relatorios()
 
     elif opcao == 0:
         exit()
 
-Menu()
 
 
 

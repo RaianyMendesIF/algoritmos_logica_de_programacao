@@ -1,5 +1,6 @@
-from classes.evento import buscar_evento, adicionar_participante, verificar_participante, listar_todos_participantes
-from classes.usuario import buscar_usuario, nome_usuario
+from evento import buscar_evento, adicionar_participante, verificar_participante, listar_todos_participantes
+from usuario import buscar_usuario, nome_usuario
+
 
 def matricular_participante():
     print("    MATRICULAR USUÁRIO EM EVENTO")

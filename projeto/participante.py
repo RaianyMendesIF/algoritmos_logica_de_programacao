@@ -2,36 +2,7 @@ from evento import buscar_evento, adicionar_participante, verificar_participante
 from usuario import buscar_usuario, nome_usuario
 
 
-def matricular_participante():
-    print("    MATRICULAR USUÁRIO EM EVENTO")
-    event = buscar_evento()
-    if event:
-        print(f"EVENTO: {event[2][event[1]][0]}")
-        user= buscar_usuario()
-        if user:
-            print(f"USUÁRIO: {user[2][user[1]][0]}")
-            if verificar_participante(event[0], event[1], user[1]):
-                print("\nUsuário já cadastrado no evento!")
-            else:
-                adicionar_participante(event[0], event[1], user[1])
-                print("Usário matriculado ao evento com sucesso!")
-        else:
-            print("\nUsuário não identificado, verifique a matrícula e tente novamente!")
-    else: 
-        print("\nEvento não identificado, verifique o código e tente novamente!")
 
-
-def listar_participantes():
-    print("    LISTAR PARTICIPANTES POR EVENTO")
-    event = buscar_evento()
-    if event:
-        print(f"EVENTO: {event[2][event[1]][0]}")
-        participantes = event[2][event[1]][3]
-        for i,matricula in enumerate(participantes):
-            print(f"{i+1} - {nome_usuario(matricula)}")
-
-    else: 
-        print("\nEvento não identificado, verifique o código e tente novamente!")
     
 
 def ativos_participantes():

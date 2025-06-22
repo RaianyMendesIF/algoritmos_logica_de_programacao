@@ -3,6 +3,10 @@ from collections import Counter #  contar a frequência de elementos em uma sequ
 from evento import eventos, tipos_evento, temas
 from usuario import usuarios
 
+
+def titulo(texto):
+    print(f"------------------------- {texto} -------------------------")
+
 # EVENTOS
 
 #TIPO DE EVENTO
@@ -35,7 +39,7 @@ def adicionar_tema(novo_tema):
 
 #EVENTOS
 def cadastrar_evento():
-    print("_____ CADASTRO DE EVENTO _____")
+    titulo("CADASTRO DE EVENTO")
     cod = len(eventos) + 1
     nome = input("NOME: ")
 
@@ -66,7 +70,7 @@ def verificar_evento(cod):
         return eventos[cod]
 
 def listar_participantes_evento():
-    print("_____ PARTICIPANTES POR EVENTO _____")
+    titulo("PARTICIPANTES POR EVENTO") 
     cod = int(input("CÓDIGO EVENTO: "))
     if verificar_evento(cod):
         print("EVENTO: ", eventos[cod]['nome'])
@@ -77,20 +81,20 @@ def listar_participantes_evento():
     
 def listar_participantes(cod):
     participantes = eventos[cod]['participantes']
-    for i,user in enumerate(participantes):
-        print(f"{i+1} - {usuarios[user]['nome']}  /  {usuarios[user]['email']}")
+    for user in participantes:
+       print(f" {user}  -  {usuarios[user]['nome']}   -   {usuarios[user]['email']}")
 
 def exibir_evento(k):
     print(f'''
- COD: {k} | NOME: {eventos[k]['nome']} | TIPO: {eventos[k]['tipo']}      
- DATA: {eventos[k]['data']} | TEMA: {eventos[k]['tema']}              
- PARTICIPANTES: 
- {listar_participantes(k)} 
+ COD: {k}   |   NOME: {eventos[k]['nome']}   |   TIPO: {eventos[k]['tipo']}
+ DATA: {eventos[k]['data']}   |   TEMA: {eventos[k]['tema']}
 
-+--------------------------------------------------------------+''')
+ PARTICIPANTES:''')
+    listar_participantes(k) 
+    print('\n+----------------------------------------------------------------------------------------------------+')
 
 def listar_eventos():
-    print("_____ LISTAR EVENTOS _____")
+    titulo("LISTAR EVENTOS")
     if lista_vazia(eventos):
         print("NÃO HÁ EVENTOS CADASTRADOS PARA LISTAR!")   
     else:
@@ -102,7 +106,7 @@ def editar_evento():
     if lista_vazia(eventos):
         print("NÃO HÁ EVENTOS CADASTRADOS PARA EDITAR!")
     else:
-        print("_____ EDITAR EVENTO _____")
+        titulo("EDITAR EVENTO")
         cod = int(input("CÓD. EVENTO: "))
         if verificar_evento(cod):
             exibir_evento(cod) 
@@ -123,7 +127,7 @@ def editar_evento():
                 clear()
 
                 if op == 1:
-                    print("_____ EDITAR NOME _____")
+                    titulo("EDITAR NOME")
                     nome = input("NOVO NOME: ")
                     clear()
                     try:
@@ -134,7 +138,7 @@ def editar_evento():
                     continuar()
 
                 if op == 2:
-                    print("_____ EDITAR TIPO DE EVENTO _____")
+                    titulo("EDITAR TIPO DE EVENTO")
                     #TIPO EVENTO
                     mostrar_tipos_evento()
                     op = validar_opcao(4,1)
@@ -148,7 +152,7 @@ def editar_evento():
                     continuar()
 
                 if op == 3:
-                    print("_____ EDITAR DATA _____")
+                    titulo("EDITAR DATA")
                     data = input("NOVA DATA: ")
                     clear()
                     try:
@@ -159,7 +163,7 @@ def editar_evento():
                     continuar()
 
                 if op == 4:
-                    print("_____ EDITAR TEMA _____")
+                    titulo("EDITAR TEMA")
                      # TEMA EVENTO
                     mostrar_temas()
                     op = validar_opcao(len(temas))
@@ -182,7 +186,7 @@ def editar_evento():
     continuar()
 
 def buscar_evento():
-    print("_____ BUSCAR EVENTO _____")
+    titulo("BUSCAR EVENTO")
     if lista_vazia(eventos):
         print("NÃO HÁ EVENTOS CADASTRADOS PARA BUSCAR!")       
     else:
@@ -195,7 +199,7 @@ def buscar_evento():
 
 def remover_evento():
     global eventos
-    print("_____ REMOVER EVENTO _____")
+    titulo("REMOVER EVENTO")
     if lista_vazia(eventos):
         print("NÃO HÁ EVENTOS CADASTRADOS PARA REMOVER!")       
     else:
@@ -203,8 +207,25 @@ def remover_evento():
         if verificar_evento(cod):
             clear()
             exibir_evento(cod)
-            del eventos[cod]
-            print(f" EVENTO REMOVIDO COM SUCESSO! ")         
+            op = input("CONFIRMAR EXCLUSÃO(S/N): ")
+            if confirmar_exclusao(op):
+                try: # remover a mat das listas do curso
+                    parti = eventos[cod]['participantes']
+                    for mat in parti:
+                        usuarios[mat]['eventos'].remove(cod)
+                except:
+                    print("$# NÃO FOI POSSÍVEL REMOVER O EVENTO! $#")
+                    continuar()  
+                try:     
+                    del eventos[cod]
+                    print(f" EVENTO REMOVIDO COM SUCESSO! ")
+                    continuar()
+                    return
+                except:
+                    print("$#ERRO AO REMOVER O PARTICIPANTE! $#")    
+            else:
+                print(f"OPERAÇÃO DE EXCLUSÃO CANCELADA! ")
+                continuar()       
         else: 
             print("$# EVENTO NÃO IDENTIFICADO, VERIFIQUE O CÓDIGO E TENTE NOVAMENTE! $#")
     continuar()
@@ -217,30 +238,38 @@ def consultar_participante(cod, matricula):
   
 def temas_frequentes():
     cont = Counter() # Contador vazio (como um dicionário)
-    for evento in eventos:
-        for tema in evento['tema']:
+    for cod in eventos:
+            tema = eventos[cod]['tema']
             cont[tema] += 1 #Incrementa 1 na contagem do tema apartir do seu id
     frequentes = cont.most_common(10) # 10 temas que mais aparecem
 
-    print("_____ TEMAS FREQUENTES _____")
+    titulo("TEMAS FREQUENTES")
     for tema, qnt in frequentes:
         print(f"{tema} - {qnt} eventos")
+    continuar()
 
 def participantes_mais_ativos():
     contador = Counter()  
-    for evento in eventos:
-        for matricula in evento['participantes']:
+    for cod in eventos:
+        for matricula in eventos[cod]['participantes']:
             contador[matricula] += 1
     mais_ativos = contador.most_common(50)
 
-    print("_____ PARTICIPANTES MAIS ATIVOS _____")
+    titulo("PARTICIPANTES MAIS ATIVOS")
     for matricula, qtd in mais_ativos:
         print(f"{usuarios[matricula]['nome']} - {qtd} eventos")
-
-
     
+    continuar()
+  
 
 # USUÁRIOS
+def listar_cursos_matriculado(mat):
+    evento = usuarios[mat]['eventos']
+    if lista_vazia(evento):
+        print("NÃO HÁ CURSOS MATRICULADOS!")
+    else:
+        for even in evento:
+            print(f" {even}  -  {eventos[even]['nome']}")
 
 def criar_lista_temas(tematica):
     tema = []
@@ -249,7 +278,7 @@ def criar_lista_temas(tematica):
     return tema
 
 def cadastrar_usuario():
-    print("_____CADASTRO DE USUÁRIO_____")
+    titulo("CADASTRO DE USUÁRIO")
     matricula = len(usuarios) + 1000
     nome = input("NOME COMPLETO: ")
     email = input("E-MAIL: ")
@@ -259,7 +288,7 @@ def cadastrar_usuario():
     tematica =[tema.strip() for tema in tematica.split(",")]
     temas = criar_lista_temas(tematica)
 
-    usuarios[matricula] = {'nome' : nome, 'email' : email, 'temas' : temas}
+    usuarios[matricula] = {'nome' : nome, 'email' : email, 'temas' : temas, 'eventos' : []}
     return print(f'USUÁRIO {nome} CADASTRADO COM SUCESSO!')
 
 def verificar_usuario(mat):
@@ -268,23 +297,28 @@ def verificar_usuario(mat):
 
 def exibir_usuario(mat):
     print(f'''
- MATRÍCULA: {usuarios[mat]} 
- NOME: {usuarios[mat]['nome']}          
+ MATRÍCULA: {mat}   |   NOME: {usuarios[mat]['nome']}          
  E-MAIL: {usuarios[mat]['email']} 
  PREFERÊNCIA TEMÁTICA: {", ".join(usuarios[mat]['temas'])}
 
-+--------------------------------------------------------------+''')
+ CURSOS MATRICULADOS:''')
+    listar_cursos_matriculado(mat)
+    print('\n+----------------------------------------------------------------------------------------------------+')
 
 def listar_usuarios():
-    print("_____ LISTAR USUÁRIOS _____")
-    for mat in usuarios:
-        exibir_usuario(mat)
+    titulo("LISTAR USUÁRIOS")
+    if lista_vazia(usuarios):
+        print("NÃO HÁ PARTICIPANTES CADASTRADOS PARA LISTAR!")   
+    else:
+        for mat in usuarios:
+            exibir_usuario(mat)
+    continuar()
              
-def editar_evento():
+def editar_usuario():
     if lista_vazia(usuarios):
         print("NÃO HÁ USUÁRIOS CADASTRADOS PARA EDITAR!")
     else:
-        print("_____ EDITAR USUÁRIO _____")
+        titulo("EDITAR USUÁRIO")
         mat = int(input("MATRÍCULA USUÁRIO: "))
         if verificar_usuario(mat):
             exibir_usuario(mat)
@@ -347,6 +381,7 @@ def editar_evento():
         continuar()
 
 def buscar_usuario():
+    titulo("BUSCAR USUÁRIO")
     if lista_vazia(usuarios):
              print("NÃO HÁ USUÁRIOS CADASTRADOS PARA BUSCAR!")
     else:
@@ -362,7 +397,7 @@ def retornar_nome_usuario(matricula):
 
 def remover_usuario():
     global usuarios
-    print("_____ REMOVER PARTICIPANTE _____")
+    titulo("REMOVER PARTICIPANTE")
     if lista_vazia(usuarios):
         print("NÃO HÁ USUÁRIOS CADASTRADOS PARA REMOVER!")       
     else:
@@ -370,40 +405,107 @@ def remover_usuario():
         if verificar_usuario(mat):
             clear()
             exibir_usuario(mat)
-            del usuarios[mat]
-            print(f" USUÁRIO REMOVIDO COM SUCESSO! ")         
+            op = input("CONFIRMAR EXCLUSÃO(S/N): ")
+            if confirmar_exclusao(op):
+                try: # remover a mat das listas do curso
+                    cursos = usuarios[mat]['eventos']
+                    for cod in cursos:
+                        eventos[cod]['participantes'].remove(mat)
+                except:
+                    print("$# NÃO FOI POSSÍVEL REMOVER O PARTICIPANTE! $#")
+                    continuar() 
+                    return 
+                try:     
+                    del usuarios[mat]
+                    print(f" USUÁRIO REMOVIDO COM SUCESSO! ")
+                    continuar()
+                    return
+                except:
+                    print("$#ERRO AO REMOVER O PARTICIPANTE! $#")            
+            else:
+                print(f"OPERAÇÃO DE EXCLUSÃO CANCELADA! ")
+                return       
         else: 
             print("$# USUÁRIO NÃO IDENTIFICADO, VERIFIQUE A MATRÍCULA E TENTE NOVAMENTE! $#")
     continuar()
 
 
+# MATRÍCULA
+
 def adicionar_participante():
     print("_____ ADICIONAR PARTICIPANTE _____")
     if lista_vazia(eventos):
-        print("NÃO HÁ EVENTOS CADASTRADOS PARA BUSCAR!")       
+        print("NÃO HÁ EVENTOS CADASTRADOS PARA REMOVER!")       
     else:
         cod = int(input("CÓDIGO EVENTO: "))
         if verificar_evento(cod):
             exibir_evento(cod)
             continuar()
-            clear()
-            mat = int(input("MATRÍCULA PARTICIPANTE: "))
-            if verificar_usuario(mat):
-                if consultar_participante(cod, mat):
+            while True:
+                clear()
+                mat = int(input("MATRÍCULA PARTICIPANTE: "))
+                if verificar_usuario(mat):
+                    if consultar_participante(cod, mat):
+                        print("PARTICIPANTE JÁ ESTÁ MATRICULADO NESSE EVENTO!")
+                    else:
+                        exibir_usuario(mat)
+                        continuar()
+                        clear()
+                        try:
+                            eventos[cod]['participantes'].append(mat)
+                            print("PARTICIPANTE MATRICULADO COM SUCESSO!")
+                            continuar()
+                            return
+                        except:
+                            print("$# NÃO FOI POSSÍVEL MATRICULAR O PARTICIPANTE! $#")
+                            continuar()
 
-                    exibir_usuario(cod)
-                    continuar()
-                    clear()
-                    try:
-                        eventos[mat]['participantes'].appens(mat)
-                        print("PARTICIPANTE MATRICULADO COM SUCESSO!")
-                    except:
-                        print("$# NÃO FOI POSSÍVEL MATRICULAR O PARTICIPANTE! $#")
+                            return
                 else:
-                    print("PARTICIPANTE JÁ ESTÁ MATRICULADO NESSE EVENTO!")
-            else: 
-                print("$# PARTICIPANTE NÃO IDENTIFICADO, VERIFIQUE A MATRÍCULA E TENTE NOVAMENTE! $#")
-            continuar()
+                    print("$# PARTICIPANTE NÃO IDENTIFICADO, VERIFIQUE A MATRÍCULA E TENTE NOVAMENTE! $#")
+                continuar()
         else: 
             print("$# EVENTO NÃO IDENTIFICADO, VERIFIQUE O CÓDIGO E TENTE NOVAMENTE! $#")
+        continuar()
+
+def remover_participante():
+    print("_____ REMOVER PARTICIPANTE _____")
+    cod = int(input("CÓDIGO EVENTO: "))
+    if verificar_evento(cod):
+        exibir_evento(cod)
+        continuar()
+        if lista_vazia(eventos[cod]['participantes']):
+            print("NÃO HÁ PARTICIPANTES CADASTRADOS PARA REMOVER!")       
+        else:
+            while True:
+                clear()
+                exibir_evento(cod)
+                mat = int(input("\nMATRÍCULA NOVO PARTICIPANTE: "))
+                if verificar_usuario(mat):
+                    if consultar_participante(cod, mat):
+                        print("PARTICIPANTE JÁ ESTÁ MATRICULADO NESSE EVENTO!")
+                    else:
+                        exibir_usuario(mat)
+                        continuar()
+                        clear()
+                        try:
+                            eventos[cod]['participantes'].remove(mat)
+                            print(f"PARTICIPANTE REMOVIDO DO CURSO {eventos[cod]['nome']} COM SUCESSO!")
+                            continuar()
+                            return
+                        except:
+                            print("$# NÃO FOI POSSÍVEL REMOVER O PARTICIPANTE! $#")
+                            continuar()
+
+                            return
+                else:
+                    print("$# PARTICIPANTE NÃO IDENTIFICADO, VERIFIQUE A MATRÍCULA E TENTE NOVAMENTE! $#")
+                continuar()
+    else: 
+        print("$# EVENTO NÃO IDENTIFICADO, VERIFIQUE O CÓDIGO E TENTE NOVAMENTE! $#")
     continuar()
+
+def confirmar_exclusao(op):
+    if op.upper() == "S":
+        return True
+    

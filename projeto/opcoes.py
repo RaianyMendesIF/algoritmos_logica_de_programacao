@@ -1,26 +1,29 @@
 from utilidades import validar_opcao, clear
-from funcoes import cadastrar_evento, listar_eventos, editar_evento, buscar_evento, remover_evento, adicionar_participante
+from funcoes import cadastrar_evento, listar_eventos, editar_evento, buscar_evento, remover_evento, temas_frequentes
 from funcoes import cadastrar_usuario, listar_usuarios, editar_usuario, buscar_usuario, remover_usuario
+from funcoes import adicionar_participante, remover_participante, listar_participantes_evento, participantes_mais_ativos
 
-def Menu2(nome, nova):
+def Menu2(nome, nova, nova2):
     clear()
     print(f'''
 +-----------------------------+
 |       {    nome   }         |
 +-----------------------------+
-| 1 - CADASTAR                |
+| 1 - CADASTRAR               |
 | 2 - LISTAR                  |
 | 3 - EDITAR                  |
 | 4 - BUSCAR                  |    
 | 5 - EXCLUIR                 |
 | 6 - {           nova       }|
+| 7 - {           nova2      }|
 | 0 - VOLTAR                  |
 +-----------------------------+   ''')
 
 def Eventos(): 
     while True:
-        Menu2("   EVENTO   ", " ADICIONAR PARTICIPANTE")
-        op = validar_opcao(5)
+        Menu2("   EVENTO    ", "ADICIONAR PARTICIPANTE  ", "REMOVER PARTICIPANTE    " )
+        
+        op = validar_opcao(7)
         clear()
         if op == 1:
             cadastrar_evento() 
@@ -39,14 +42,18 @@ def Eventos():
 
         elif op == 6:
             adicionar_participante()
+
+        elif op == 7:
+            remover_participante()
+        
         elif op == 0:
             return
 
 def Participantes():
     while True:
-        Menu2("PARTICIPANTE", "MATRICULAR             ")
+        Menu2("PARTICIPANTE", "MATRICULAR PARTICIPANTE ", "REMOVER PARTICIPANTE    ")
 
-        op = validar_opcao(5)
+        op = validar_opcao(7)
         clear()
         if op == 1:
             cadastrar_usuario() 
@@ -65,6 +72,9 @@ def Participantes():
 
         elif op == 6:
             adicionar_participante()
+
+        elif op == 7:
+            remover_participante()
             
         elif op == 0:
             return
@@ -75,15 +85,16 @@ def Relatorios():
     +--------------------------------+
     |           RELATÓRIO            |
     +--------------------------------+
-    | 1 - Eventos                    |
-    | 2 - Usuários                   |
-    | 3 - Participantes por evento   |
-    | 4 - Participantes mais ativos  |
-    | 5 - Temas mais frequentes      |
-    | 0 - Voltar                     |
+    | 1 - EVENTOS                    |
+    | 2 - USUÁRIOS                   |
+    | 3 - PARTICIPANTES POR EVENTO   |
+    | 4 - PARTICIPANTES MAIS ATIVOS  |
+    | 5 - TEMAS MAIS FREQUENTES      |
+    | 0 - VOLTAR                     |
     +--------------------------------+   
                                     ''')
         op = validar_opcao(5)
+        clear()
 
         if op == 1:
             listar_eventos()
@@ -92,17 +103,14 @@ def Relatorios():
             listar_usuarios()
               
         elif op == 3:
-            clear()
+            listar_participantes_evento()
         
-
         elif op == 4:
-            clear()
-            
-            
-        
+            participantes_mais_ativos()
+                  
         elif op == 5:
-            clear()
+            temas_frequentes()
 
         elif op == 0:
-            exit()
+            return
     

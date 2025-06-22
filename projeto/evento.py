@@ -1,7 +1,7 @@
 
 eventos = {
     1: {'nome': 'Introdução a Tecnologia', 'tipo': 'Palestras', 'data' : '25/07/2025',
-         'tema' : 'Inteligência Artificial', 'participantes': [1000, 1001, 1002]},
+         'tema' : 'Inteligência Artificial', 'participantes': [1000, 1001, 1002, 1004]},
     2: {'nome': 'Lógica de Programação', 'tipo': 'Maratonas de Programação', 'data' : '15/08/2025',
          'tema' : 'Linguagens de Programação', 'participantes':[1001, 1003, 1004]},
 } 

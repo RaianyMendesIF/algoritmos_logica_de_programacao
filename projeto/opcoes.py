@@ -1,7 +1,8 @@
-from utilidades import validar_opcao, clear
-from funcoes import cadastrar_evento, listar_eventos, editar_evento, buscar_evento, remover_evento, temas_frequentes
+from utilidades import validar_opcao, clear, confirmar_gerarPDF, continuar
+from funcoes import cadastrar_evento, listar_eventos, editar_evento, buscar_evento, remover_evento, temas_frequentes, verificar_evento
 from funcoes import cadastrar_usuario, listar_usuarios, editar_usuario, buscar_usuario, remover_usuario
 from funcoes import adicionar_participante, remover_participante, listar_participantes_evento, participantes_mais_ativos
+from funcoes import exportar_lista_eventos, exportar_lista_usuarios, exportar_participante_evento, exportar_participante_ativo,exportar_temas_frequente
 
 def Menu2(nome, nova, nova2):
     clear()
@@ -98,18 +99,56 @@ def Relatorios():
 
         if op == 1:
             listar_eventos()
+            if confirmar_gerarPDF():
+                nome = input("NOME DO ARQUIVO:")
+                nome = nome.replace(" ", "").replace(".", "") + ".pdf"
+                exportar_lista_eventos(nome)
+                continuar()
+            else:
+                return
 
         elif op == 2:
             listar_usuarios()
+            if confirmar_gerarPDF():
+                nome = input("NOME DO ARQUIVO: ")
+                nome = nome.replace(" ", "").replace(".", "") + ".pdf"
+                exportar_lista_usuarios(nome)
+                continuar()
+            else:
+                return
               
         elif op == 3:
-            listar_participantes_evento()
+                cod = int(input("CÓDIGO EVENTO: "))
+                if verificar_evento(cod):
+                    if confirmar_gerarPDF():
+                        nome = input("NOME DO ARQUIVO: ")
+                        nome = nome.replace(" ", "").replace(".", "") + ".pdf"
+                        exportar_participante_evento(nome, cod)
+                        continuar()
+                    else:
+                        return
+                else:
+                    print("EVENTO NÃO IDENTIFICADO! REVEJA O CÓDIGO E TENTE NOVAMENTE!")
+                    return
         
         elif op == 4:
-            participantes_mais_ativos()
-                  
+            if confirmar_gerarPDF():
+                nome = input("NOME DO ARQUIVO: ")
+                nome = nome.replace(" ", "").replace(".", "") + ".pdf"
+                exportar_participante_ativo(nome)
+                continuar()
+            else:
+                return
+            
+                 
         elif op == 5:
-            temas_frequentes()
+            if confirmar_gerarPDF():
+                nome = input("NOME DO ARQUIVO: ")
+                nome = nome.replace(" ", "").replace(".", "") + ".pdf"
+                exportar_temas_frequente(nome)
+                continuar()
+            else:
+                return
 
         elif op == 0:
             return

@@ -1,11 +1,31 @@
-from utilidades import validar_opcao, lista_vazia, clear, continuar
+from functools import reduce
+from utilidades import validar_opcao, lista_vazia, clear, continuar, sair
 from collections import Counter #  contar a frequência de elementos em uma sequência
 from evento import eventos, tipos_evento, temas
 from usuario import usuarios
 
+from reportlab.pdfgen import canvas  # pip install reportlab
+from reportlab.lib.pagesizes import A4 # A4 = (210*mm,297*mm)
+
 
 def titulo(texto):
     print(f"------------------------- {texto} -------------------------")
+
+def gerar_id_evento():
+    tam = len(eventos)
+    if tam == 0:
+        return tam + 1
+    else:
+        ultimo_id = reduce(lambda x, y: x if x > y else y, eventos.keys())
+        return ultimo_id + 1
+    
+def gerar_id_usuario():
+    tam = len(usuarios)
+    if tam == 0:
+        return tam + 1000
+    else:
+        ultimo_id = reduce(lambda x, y: x if x > y else y, eventos.keys())
+        return ultimo_id + 1
 
 # EVENTOS
 
@@ -40,27 +60,38 @@ def adicionar_tema(novo_tema):
 #EVENTOS
 def cadastrar_evento():
     titulo("CADASTRO DE EVENTO")
-    cod = len(eventos) + 1
-    nome = input("NOME: ")
-
+    cod = gerar_id_evento()
+    
     #TIPO EVENTO
     mostrar_tipos_evento()
     op = validar_opcao(4, 1)
     tipo = tipos_evento[op-1]
 
+    max_parti = input("TOTAL PARTICIPANTES: ")
+
+    nome = input("NOME: ")
+    palestrante = input("PALESTRANTE: ")
+
     data = input("DATA(xx/xx/xxxx): ")
+    horario = input("HORÁRIO: ")
+    duracao = input("DURAÇÃO: ")
+    local = input("LOCAL: ")
+    
 
     # TEMA EVENTO
     mostrar_temas()
     op = validar_opcao(len(temas))
     if op == 0:
       novo_tema = input("NOVO TEMA:")
-      op = adicionar_tema(novo_tema)
+      op = adicionar_tema(novo_tema) 
     tema = temas[op-1]
+
     try:
-        eventos[cod] = {'nome' : nome, 'tipo' : tipo, 'data' : data, 'tema' : tema, 'participantes' : []}
+        eventos[cod] = { 'tipo' : tipo, 'nome' : nome, 'max_participantes': max_parti, 'data' : data,'hora' : horario,'duracao' : duracao,
+                        'local' : local, 'tema' : tema, 'palestrante' : palestrante, 'qnt_participantes' : 0, 'participantes' : []}
         clear()
-        print(f'EVENTO {nome} CADASTRADO COM SUCESSO!')
+        
+        print(f'EVENTO {nome} CADASTRADO COM SUCESSO! \nCÓDIGO DO EVENTO: {cod}')
     except:
         print(f'$@ NÃO FOI POSSÍVEL CADASTRAR O EVENTO {nome}! @$')
     continuar()
@@ -81,15 +112,17 @@ def listar_participantes_evento():
     
 def listar_participantes(cod):
     participantes = eventos[cod]['participantes']
-    for user in participantes:
-       print(f" {user}  -  {usuarios[user]['nome']}   -   {usuarios[user]['email']}")
+    print(f"      ID              NOME                      EMAIL               ")
+    for i,user in enumerate(participantes):
+       print(f" {i} - {user}  |  {usuarios[user]['nome']}   |   {usuarios[user]['email']}")
 
 def exibir_evento(k):
     print(f'''
- COD: {k}   |   NOME: {eventos[k]['nome']}   |   TIPO: {eventos[k]['tipo']}
- DATA: {eventos[k]['data']}   |   TEMA: {eventos[k]['tema']}
+ COD: {k}   |   {eventos[k]['tipo']} : {eventos[k]['nome']} 
+ TEMA: {eventos[k]['tema']}   |   PARTICIPANTES: {eventos[k]['qnt_participantes']}/{eventos[k]['max_participantes']} 
+ DATA: {eventos[k]['data']}   |   HORÁRIO: {eventos[k]['hora']}   |   LOCAL: {eventos[k]['local']}   |   DURAÇÃO: {eventos[k]['duracao']} 
 
- PARTICIPANTES:''')
+ USUÁRIOS MATRICULADOS:''')
     listar_participantes(k) 
     print('\n+----------------------------------------------------------------------------------------------------+')
 
@@ -118,12 +151,17 @@ def editar_evento():
 +----------------------------+
 | 1 - NOME                   |
 | 2 - TIPO                   |
-| 3 - DATA                   |
-| 4 - TEMA                   |    
+| 3 - TEMA                   |
+| 4 - TOTAL PARTICIPANTES    |
+| 5 - PALESTRANTE            |
+| 6 - DATA                   |
+| 7 - HORA                   |    
+| 8 - LOCAL                  |    
+| 9 - DURAÇÃO                |    
 | 0 - SAIR                   |
 +----------------------------+   ''')
 
-                op = validar_opcao(4)
+                op = validar_opcao(9)
                 clear()
 
                 if op == 1:
@@ -150,19 +188,8 @@ def editar_evento():
                     except:
                         print("!@ NÃO FOI POSSÍVEL ALTERAR O TIPO DE EVENTO @!")
                     continuar()
-
+                
                 if op == 3:
-                    titulo("EDITAR DATA")
-                    data = input("NOVA DATA: ")
-                    clear()
-                    try:
-                        eventos[cod]['data'] = data 
-                        print(f"DATA DO EVENTO ALTERADO PARA {data} COM SUCESSO!")
-                    except:
-                        print("!@ NÃO FOI POSSÍVEL ALTERAR A DATA @!")
-                    continuar()
-
-                if op == 4:
                     titulo("EDITAR TEMA")
                      # TEMA EVENTO
                     mostrar_temas()
@@ -179,6 +206,75 @@ def editar_evento():
                         print(f"!@ {tema} NÃO FOI POSSÍVEL ALTERAR O TEMA @!")
                     continuar()
 
+                if op == 4:
+                    titulo("EDITAR TOTAL DE PARTICIPANTES")
+                    max_participantes = int(input("NOVO TOTAL DE PARTICIPANTES: "))
+                    clear()
+                    try:
+                        if eventos[cod]['qnt_participantes'] > max_participantes:
+                         print("#@ NÃO FOI POSSÍVEL REALIZAR A ALTERAÇÃO, POIS HÁ MAIS PARTICIPANTES MATRICULADOS DO QUE O NOVO LIMITE! @#")
+                        else:
+                            eventos[cod]['max_participantes'] = max_participantes 
+                            print(f"TOTAL DE PARTICIPANTES DO EVENTO ALTERADO PARA {max_participantes} COM SUCESSO!")
+                    except:
+                        print("$@ NÃO FOI POSSÍVEL ALTERAR O TOTAL DE PARTICIPANTES DO EVENTO! @$")
+                    continuar()
+
+                if op == 5:
+                    titulo("EDITAR PALESTRANTE")
+                    palestrante = input("NOVO PALESTRANTE: ")
+                    clear()
+                    try:
+                        eventos[cod]['palestrante'] = palestrante 
+                        print(f"PALESTRANTE DO EVENTO ALTERADO PARA {palestrante} COM SUCESSO!")
+                    except:
+                        print("$@ NÃO FOI POSSÍVEL ALTERAR O PALESTRANTE DO EVENTO! @$")
+                    continuar()
+
+                if op == 6:
+                    titulo("EDITAR DATA")
+                    data = input("NOVA DATA: ")
+                    clear()
+                    try:
+                        eventos[cod]['data'] = data 
+                        print(f"DATA DO EVENTO ALTERADO PARA {data} COM SUCESSO!")
+                    except:
+                        print("!@ NÃO FOI POSSÍVEL ALTERAR A DATA @!")
+                    continuar()
+
+                if op == 7:
+                    titulo("EDITAR HORÁRIO")
+                    horario = int(input("NOVO HORÁRIO: "))
+                    clear()
+                    try:
+                        eventos[cod]['hora'] = horario
+                        print(f"HORÁRIO DO EVENTO ALTERADO PARA {max_participantes} COM SUCESSO!")
+                    except:
+                        print("$@ NÃO FOI POSSÍVEL ALTERAR O HORÁRIO DO EVENTO! @$")
+                    continuar()
+                
+                if op == 8:
+                    titulo("EDITAR LOCAL")
+                    local = int(input("NOVO LOCAL: "))
+                    clear()
+                    try:
+                        eventos[cod]['local'] = local
+                        print(f"LOCAL DO EVENTO ALTERADO PARA {local} COM SUCESSO!")
+                    except:
+                        print("$@ NÃO FOI POSSÍVEL ALTERAR O LOCAL DO EVENTO! @$")
+                    continuar()
+
+                if op == 9:
+                    titulo("EDITAR DURAÇÃO")
+                    duracao = int(input("NOVa DURAÇÃO: "))
+                    clear()
+                    try:
+                        eventos[cod]['duracao'] = duracao
+                        print(f"DURAÇÃO DO EVENTO ALTERADO PARA {duracao} COM SUCESSO!")
+                    except:
+                        print("$@ NÃO FOI POSSÍVEL ALTERAR A DURAÇÃO DO EVENTO! @$")
+                    continuar()
+
                 if op == 0:
                     return 
         else:
@@ -186,15 +282,26 @@ def editar_evento():
     continuar()
 
 def buscar_evento():
-    titulo("BUSCAR EVENTO")
-    if lista_vazia(eventos):
-        print("NÃO HÁ EVENTOS CADASTRADOS PARA BUSCAR!")       
-    else:
-        cod = int(input("CÓDIGO EVENTO: "))
-        if verificar_evento(cod):
-            exibir_evento(cod) 
-        else: 
-            print("$# EVENTO NÃO IDENTIFICADO, VERIFIQUE O CÓDIGO E TENTE NOVAMENTE! $#")
+    while True:
+        titulo("BUSCAR EVENTO")
+        if lista_vazia(eventos):
+            print("NÃO HÁ EVENTOS CADASTRADOS PARA BUSCAR!")   
+            return    
+        else:
+            cod = int(input("CÓDIGO EVENTO: "))
+            if verificar_evento(cod):
+                exibir_evento(cod)
+                if sair("BUSCAR EVENTO") == True:
+                    return
+                else:
+                    clear()
+            else: 
+                print("$# EVENTO NÃO IDENTIFICADO, VERIFIQUE O CÓDIGO E TENTE NOVAMENTE! $#")
+                if sair("BUSCAR EVENTO") == True:
+                    return
+                else: 
+                    continuar()
+                    clear( )
     continuar()
 
 def remover_evento():
@@ -254,6 +361,7 @@ def participantes_mais_ativos():
         for matricula in eventos[cod]['participantes']:
             contador[matricula] += 1
     mais_ativos = contador.most_common(50)
+    
 
     titulo("PARTICIPANTES MAIS ATIVOS")
     for matricula, qtd in mais_ativos:
@@ -279,7 +387,7 @@ def criar_lista_temas(tematica):
 
 def cadastrar_usuario():
     titulo("CADASTRO DE USUÁRIO")
-    matricula = len(usuarios) + 1000
+    matricula = gerar_id_usuario()
     nome = input("NOME COMPLETO: ")
     email = input("E-MAIL: ")
 
@@ -508,4 +616,155 @@ def remover_participante():
 def confirmar_exclusao(op):
     if op.upper() == "S":
         return True
-    
+
+# EXPORTAR PDFs A4 = (210*mm,297*mm)
+#Função para converter mm em pontos  
+def mm2p(milimitros):
+    return milimitros / 0.3527777
+
+def exportar_lista_eventos(nome):
+    try:
+        doc = canvas.Canvas(nome, pagesize=A4)
+        x1 = 10
+        x2 = 200
+        y = 287 
+        doc.drawString(mm2p(75),mm2p(y), "LISTA DE EVENTOS")
+        y -= 10
+ 
+        for key in eventos.keys():
+            if y < 50:
+                doc.showPage()
+                y=287
+            doc.drawString(mm2p(x1),mm2p(y), f"COD: {key}  |   EVENTO: {eventos[key]['tipo']} - {eventos[key]['nome']} ")
+            y -= 6
+            doc.drawString(mm2p(x1),mm2p(y), f"TEMA: {eventos[key]['tema']}   |   MINISTRADOR: {eventos[key]['palestrante']}")
+            y -= 6
+            doc.drawString(mm2p(x1),mm2p(y), f"DATA: {eventos[key]['data']}  |   HORA: {eventos[key]['hora']}   |   DURAÇÃO: {eventos[key]['duracao']} ")
+            y -= 6
+            doc.drawString(mm2p(x1),mm2p(y), f"LOCAL: {eventos[key]['local']}   |  PARTICIPANTES: {eventos[key]['qnt_participantes']}/{eventos[key]['max_participantes']}")
+            y -= 6
+            doc.line(mm2p(x1), mm2p(y),mm2p(x2), mm2p(y))
+            y -= 8
+        
+        doc.save()
+        print(f"DOCUMENTO EXPORTADO COM SUCESSO")
+    except:
+        print("#@ ERRO AO EXPORTAR O DOCUMENTO PDF! #@")
+
+def exportar_lista_usuarios(nome):
+    try:
+        use = canvas.Canvas(nome, pagesize=A4)
+        x1 = 10
+        x2 = 200
+        y = 287 
+        use.drawString(mm2p(75),mm2p(y), "LISTA DE USUÁRIOS")
+        y -= 10
+        use.drawString(mm2p(x1), mm2p(y), "   ID   |                 NOME                  |               E-MAIL          |         QUANTIDADES DE EVENTOS        ")
+        y -= 3
+        use.line(mm2p(x1), mm2p(y),mm2p(x2), mm2p(y))
+        y -= 10
+        for key in usuarios.keys():
+            if y < 25:
+                use.showPage()
+                y = 287
+                use.drawString(mm2p(x1), mm2p(y), "   ID   |            NOME            |            E-MAIL          |        QUANTIDADES DE EVENTOS        ")
+            use.drawString(mm2p(x1), mm2p(y), f"  {key} |   {usuarios[key]['nome']}   |   {usuarios[key]['email']}  |   {len(usuarios[key]['eventos'])}")
+            y -= 6
+            use.line(mm2p(x1), mm2p(y),mm2p(x2), mm2p(y))
+            y -= 8
+        
+        use.save()
+        print(f"DOCUMENTO EXPORTADO COM SUCESSO")
+    except:
+        print("#@ ERRO AO EXPORTAR O DOCUMENTO PDF! #@")
+
+def exportar_participante_evento(nome,cod):
+    try:
+        use = canvas.Canvas(nome, pagesize=A4)
+        x1 = 10
+        x2 = 200
+        y = 287 
+        use.drawString(mm2p(75),mm2p(y), "LISTA DE PARTICIPANTES POR EVENTO")
+        y -= 10
+        use.drawString(mm2p(x1), mm2p(y), f"EVENTO: {eventos[cod]['tipo']} - {eventos[cod]['nome']}  |  COD: {cod}")
+        y -= 3
+        use.line(mm2p(x1), mm2p(y),mm2p(x2), mm2p(y))
+        y -= 10
+        for user in eventos[cod]['participantes']:
+            if y < 25:
+                use.showPage()
+                y = 287
+                use.drawString(mm2p(x1), mm2p(y), f"EVENTO: {eventos[cod]['tipo']} - {eventos[cod]['nome']}  |  COD: {cod}")
+                y -= 3
+                use.line(mm2p(x1), mm2p(y),mm2p(x2), mm2p(y))
+            use.drawString(mm2p(x1), mm2p(y), f"  {user}      {usuarios[user]['nome']}       {usuarios[user]['email']}")
+            y -= 6
+            use.line(mm2p(x1), mm2p(y),mm2p(x2), mm2p(y))
+            y -= 8
+        
+        use.save()
+        print(f"DOCUMENTO EXPORTADO COM SUCESSO")
+    except:
+        print("#@ ERRO AO EXPORTAR O DOCUMENTO PDF! #@")
+
+def exportar_participante_ativo(nome):
+    cont = Counter()  
+    for cod in eventos:
+        for matricula in eventos[cod]['participantes']:
+            cont[matricula] += 1
+    mais_ativos = cont.most_common(50)
+    try:
+        use = canvas.Canvas(nome, pagesize=A4)
+        x1 = 10
+        x2 = 200
+        y = 287 
+        use.drawString(mm2p(75),mm2p(y), "LISTA DE PARTICIPANTES MAIS ATIVOS")
+        y -= 10
+        use.drawString(mm2p(x1), mm2p(y), f" ID    |            PARTICIPANTE                |         QUANTIDADE DE EVENTOS      ")
+        y -= 3
+        use.line(mm2p(x1), mm2p(y),mm2p(x2), mm2p(y))
+        y -= 10
+        for usua, qnt in mais_ativos:
+            if y < 25:
+                use.showPage()
+                y = 287
+            use.drawString(mm2p(x1), mm2p(y), f"{usua}      {usuarios[usua]['nome']}                 {qnt}")
+            y -= 6
+            use.line(mm2p(x1), mm2p(y),mm2p(x2), mm2p(y))
+            y -= 8
+        
+        use.save()
+        print(f"DOCUMENTO EXPORTADO COM SUCESSO")
+    except:
+        print("#@ ERRO AO EXPORTAR O DOCUMENTO PDF! #@")
+
+def exportar_temas_frequente(nome):
+    cont = Counter() 
+    for cod in eventos:
+            tema = eventos[cod]['tema']
+            cont[tema] += 1 
+    frequentes = cont.most_common(10)
+    try:
+        use = canvas.Canvas(nome, pagesize=A4)
+        x1 = 10
+        x2 = 200
+        y = 287 
+        use.drawString(mm2p(75),mm2p(y), "LISTA DE TEMAS FREQUENTES")
+        y -= 10
+        use.drawString(mm2p(x1), mm2p(y), f"          TEMA                |         QUANTIDADE DE EVENTOS      ")
+        y -= 3
+        use.line(mm2p(x1), mm2p(y),mm2p(x2), mm2p(y))
+        y -= 10
+        for tema, qnt in frequentes:
+            if y < 20:
+                use.showPage()
+                y = 287
+            use.drawString(mm2p(x1), mm2p(y), f"{tema}                             {qnt}")
+            y -= 6
+            use.line(mm2p(x1), mm2p(y),mm2p(x2), mm2p(y))
+            y -= 8
+        
+        use.save()
+        print(f"DOCUMENTO EXPORTADO COM SUCESSO")
+    except:
+        print("#@ ERRO AO EXPORTAR O DOCUMENTO PDF! #@")

@@ -1,10 +1,41 @@
 
-eventos = {
-    1: {'nome': 'Introdução a Tecnologia', 'tipo': 'Palestras', 'data' : '25/07/2025',
-         'tema' : 'Inteligência Artificial', 'participantes': [1000, 1001, 1002, 1004]},
-    2: {'nome': 'Lógica de Programação', 'tipo': 'Maratonas de Programação', 'data' : '15/08/2025',
-         'tema' : 'Linguagens de Programação', 'participantes':[1001, 1003, 1004]},
-} 
+eventos = { 1: {'tipo' : 'Palestra', 'nome' : 'Introdução a Tecnologia', 'max_participantes': 100, 'data' : '25/07/2025','hora' : '14:00',
+               'duracao' : '1h 30min','local' : 'IFMS - campus Três Lagoas', 'tema' : 'Inteligência Artificial',
+                 'palestrante' : 'Rogério Alvez dos Santos Antoniassi', 'qnt_participantes' : 1, 'participantes' : [1000]}, 
+            2: {'tipo' : 'Palestra', 'nome' : 'Introdução a Tecnologia', 'max_participantes': 100, 'data' : '25/07/2025','hora' : '14:00',
+               'duracao' : '1h 30min','local' : 'IFMS - campus Três Lagoas', 'tema' : 'Inteligência Artificial',
+                 'palestrante' : 'Rogério Alvez dos Santos Antoniassi', 'qnt_participantes' : 1, 'participantes' : [1000]},
+            3: {'tipo' : 'Palestra', 'nome' : 'Introdução a Tecnologia', 'max_participantes': 100, 'data' : '25/07/2025','hora' : '14:00',
+               'duracao' : '1h 30min','local' : 'IFMS - campus Três Lagoas', 'tema' : 'Inteligência Artificial',
+                 'palestrante' : 'Rogério Alvez dos Santos Antoniassi', 'qnt_participantes' : 1, 'participantes' : [1000]},
+            4: {'tipo' : 'Palestra', 'nome' : 'Introdução a Tecnologia', 'max_participantes': 100, 'data' : '25/07/2025','hora' : '14:00',
+               'duracao' : '1h 30min','local' : 'IFMS - campus Três Lagoas', 'tema' : 'Inteligência Artificial',
+                 'palestrante' : 'Rogério Alvez dos Santos Antoniassi', 'qnt_participantes' : 1, 'participantes' : [1000]},
+            5: {'tipo' : 'Palestra', 'nome' : 'Introdução a Tecnologia', 'max_participantes': 100, 'data' : '25/07/2025','hora' : '14:00',
+               'duracao' : '1h 30min','local' : 'IFMS - campus Três Lagoas', 'tema' : 'Inteligência Artificial',
+                 'palestrante' : 'Rogério Alvez dos Santos Antoniassi', 'qnt_participantes' : 1, 'participantes' : [1000]},
+            6: {'tipo' : 'Palestra', 'nome' : 'Introdução a Tecnologia', 'max_participantes': 100, 'data' : '25/07/2025','hora' : '14:00',
+               'duracao' : '1h 30min','local' : 'IFMS - campus Três Lagoas', 'tema' : 'Inteligência Artificial',
+                 'palestrante' : 'Rogério Alvez dos Santos Antoniassi', 'qnt_participantes' : 1, 'participantes' : [1000]},
+            7: {'tipo' : 'Palestra', 'nome' : 'Introdução a Tecnologia', 'max_participantes': 100, 'data' : '25/07/2025','hora' : '14:00',
+               'duracao' : '1h 30min','local' : 'IFMS - campus Três Lagoas', 'tema' : 'Inteligência Artificial',
+                 'palestrante' : 'Rogério Alvez dos Santos Antoniassi', 'qnt_participantes' : 1, 'participantes' : [1000]},
+            8: {'tipo' : 'Palestra', 'nome' : 'Introdução a Tecnologia', 'max_participantes': 100, 'data' : '25/07/2025','hora' : '14:00',
+               'duracao' : '1h 30min','local' : 'IFMS - campus Três Lagoas', 'tema' : 'Inteligência Artificial',
+                 'palestrante' : 'Rogério Alvez dos Santos Antoniassi', 'qnt_participantes' : 1, 'participantes' : [1000]},
+            9: {'tipo' : 'Palestra', 'nome' : 'Introdução a Tecnologia', 'max_participantes': 100, 'data' : '25/07/2025','hora' : '14:00',
+               'duracao' : '1h 30min','local' : 'IFMS - campus Três Lagoas', 'tema' : 'Inteligência Artificial',
+                 'palestrante' : 'Rogério Alvez dos Santos Antoniassi', 'qnt_participantes' : 1, 'participantes' : [1000]},
+            10: {'tipo' : 'Palestra', 'nome' : 'Introdução a Tecnologia', 'max_participantes': 100, 'data' : '25/07/2025','hora' : '14:00',
+               'duracao' : '1h 30min','local' : 'IFMS - campus Três Lagoas', 'tema' : 'Inteligência Artificial',
+                 'palestrante' : 'Rogério Alvez dos Santos Antoniassi', 'qnt_participantes' : 1, 'participantes' : [1000]},
+            11: {'tipo' : 'Palestra', 'nome' : 'Introdução a Tecnologia', 'max_participantes': 100, 'data' : '25/07/2025','hora' : '14:00',
+               'duracao' : '1h 30min','local' : 'IFMS - campus Três Lagoas', 'tema' : 'Inteligência Artificial',
+                 'palestrante' : 'Rogério Alvez dos Santos Antoniassi', 'qnt_participantes' : 1, 'participantes' : [1000]},
+            12: {'tipo' : 'Palestra', 'nome' : 'Introdução a Tecnologia', 'max_participantes': 100, 'data' : '25/07/2025','hora' : '14:00',
+               'duracao' : '1h 30min','local' : 'IFMS - campus Três Lagoas', 'tema' : 'Inteligência Artificial',
+                 'palestrante' : 'Rogério Alvez dos Santos Antoniassi', 'qnt_participantes' : 1, 'participantes' : [1000]},
+            } 
 
 temas = [
     'Desenvolvimento Web',
@@ -19,12 +50,12 @@ temas = [
 ]
 
 tipos_evento = [
-    'Workshops',
-    'Maratonas de Programação', 
-    'Palestras', 
-    'Minicursos',
+    'Workshop',
+    'Maratona de Programação', 
+    'Palestra', 
+    'Minicurso',
 ]
 
 
-
+   
 

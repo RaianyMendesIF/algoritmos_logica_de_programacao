@@ -22,3 +22,17 @@ def continuar():
 def lista_vazia(lista):  
     if len(lista) == 0:
           return True
+    
+def sair(nome_secao):
+    sair = input("DESEJA SAIR DA SEÇÃO?(S/N): ")
+    if sair.upper() == 'S':
+        print(f"Saindo da seção {nome_secao}")
+        return True
+    else:
+        return False
+
+def confirmar_gerarPDF():
+    op = input("DESEJA EXPORTAR O RELATÓRIO EM PDF?(S/N) ")
+    if op.upper() == "S":
+        return True
+    

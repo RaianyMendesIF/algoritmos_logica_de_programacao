@@ -468,7 +468,7 @@ def cadastrar_usuario():
         op = input("\nDESEJA ADICIONAR MAIS TEMAS?:(S/N)")
     clear()
     usuarios[matricula] = {'nome' : nome, 'email' : email, 'temas' : tematicas, 'eventos' : []}
-    print(f'USUÁRIO {nome} CADASTRADO COM SUCESSO!')
+    print(f'USUÁRIO {nome} CADASTRADO COM SUCESSO! \nID: {matricula}')
     continuar()
 
 

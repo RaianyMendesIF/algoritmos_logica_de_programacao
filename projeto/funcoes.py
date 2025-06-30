@@ -144,7 +144,7 @@ def listar_eventos():
     else:
         for key in eventos:
             exibir_evento(key)
-        continuar
+        continuar()
 
 def editar_evento():
     if lista_vazia(eventos):
@@ -574,8 +574,11 @@ def adicionar_participante():
         if verificar_evento(cod):
             exibir_evento(cod)
             continuar()
-            while True:
-                clear()
+            clear()
+            if lista_vazia(usuarios):
+                print("NÃO HÁ USUÁRIOS CADASTRADOS PARA ADICIONAR!")    
+                continuar()   
+            else:
                 mat = int(input("MATRÍCULA PARTICIPANTE: "))
                 if verificar_usuario(mat):
                     if consultar_participante(cod, mat):
@@ -599,7 +602,7 @@ def adicionar_participante():
                 continuar()
         else: 
             print("$# EVENTO NÃO IDENTIFICADO, VERIFIQUE O CÓDIGO E TENTE NOVAMENTE! $#")
-        continuar()
+    continuar()
 
 def remover_participante():
     print("_____ REMOVER PARTICIPANTE _____")
@@ -646,6 +649,8 @@ def remover_participante():
 def confirmar_exclusao(op):
     if op.upper() == "S":
         return True
+
+
 
 # EXPORTAR PDFs A4 = (210*mm,297*mm)
 #Função para converter mm em pontos  

@@ -24,7 +24,7 @@ def lista_vazia(lista):
           return True
     
 def sair(nome_secao):
-    sair = input("DESEJA SAIR DA SEÇÃO?(S/N): ")
+    sair = input("\nDESEJA SAIR DA SEÇÃO?(S/N): ")
     if sair.upper() == 'S':
         print(f"Saindo da seção {nome_secao}")
         return True

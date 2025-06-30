@@ -1,4 +1,4 @@
-from utilidades import validar_opcao, clear, confirmar_gerarPDF, continuar, lista_vazia
+from utilidades import validar_opcao, clear, confirmar_gerarPDF, continuar
 from funcoes import cadastrar_evento, listar_eventos, editar_evento, buscar_evento, remover_evento, temas_frequentes, verificar_evento
 from funcoes import cadastrar_usuario, listar_usuarios, editar_usuario, buscar_usuario, remover_usuario
 from funcoes import adicionar_participante, remover_participante, listar_participantes_evento, participantes_mais_ativos
@@ -52,7 +52,7 @@ def Eventos():
 
 def Participantes():
     while True:
-        Menu2("PARTICIPANTE", "MATRICULAR PARTICIPANTE ", "REMOVER PARTICIPANTE    ")
+        Menu2(" PARTICIPANTE", "MATRICULAR PARTICIPANTE ", "REMOVER PARTICIPANTE    ")
 
         op = validar_opcao(7)
         clear()
@@ -99,14 +99,13 @@ def Relatorios():
 
         if op == 1:
                 listar_eventos()
-                continuar()
                 if verificar_eventos():
                     if confirmar_gerarPDF():
                         nome = input("NOME DO ARQUIVO:")
                         nome = nome.replace(" ", "").replace(".", "") + ".pdf"
                         exportar_lista_eventos(nome)
                         continuar() 
-                          
+                      
 
         elif op == 2:
             listar_usuarios()
@@ -120,7 +119,7 @@ def Relatorios():
               
         elif op == 3:
             listar_participantes_evento()
-            if verificar_usuarios() and verificar_eventos():
+            if verificar_eventos():
                 if confirmar_gerarPDF() :
                     cod = int(input("CÓDIGO EVENTO: "))
                     if verificar_evento(cod):
@@ -130,7 +129,7 @@ def Relatorios():
                         continuar()
                     else:
                         print("EVENTO NÃO IDENTIFICADO! REVEJA O CÓDIGO E TENTE NOVAMENTE!")
-   
+            
         
         elif op == 4:
             participantes_mais_ativos()

@@ -34,5 +34,6 @@ def sair(nome_secao):
 def confirmar_gerarPDF():
     op = input("DESEJA EXPORTAR O RELATÓRIO EM PDF?(S/N) ")
     if op.upper() == "S":
+        clear()
         return True
     

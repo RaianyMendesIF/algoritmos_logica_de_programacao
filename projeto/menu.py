@@ -3,7 +3,7 @@ from opcoes import Eventos, Participantes, Relatorios
 
 def Menu():
     print('''
-          
+     COMUNIDADE TECH    
 +----------------------------+
 |       MENU DE OPÇÕES       |
 +----------------------------+

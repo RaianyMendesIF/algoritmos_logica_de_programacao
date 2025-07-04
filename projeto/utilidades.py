@@ -1,5 +1,6 @@
 import os
 
+
 def validar_opcao(maximo, minimo=0):
     while True:
         try:     # O bloco try é o código que pode causar um erro. 
@@ -39,14 +40,6 @@ def confirmar_gerarPDF():
 
 def titulo(texto):
     print(f"------------------------- {texto} -------------------------")
-
-def ler_inteiro(msg):
-    while True:
-        try:
-            entrada = int(input(msg))
-            return int(entrada)
-        except ValueError:
-            print("Entrada inválida. Por favor, digite um número inteiro.")
 
 def confirmar_exclusao():
     op = input("CONFIRMAR EXCLUSÃO(S/N): ")

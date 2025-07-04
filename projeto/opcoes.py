@@ -1,14 +1,17 @@
-from utilidades import validar_opcao, clear, confirmar_gerarPDF, continuar, titulo, lista_vazia, sair, confirmar_exclusao
-from usuario import usuarios, listar_usuarios, verificar_usuario, exibir_usuario, temas_usuario
-from participante_evento import remover_usuario_cursos
-from evento import eventos,
+from utilidades import validar_opcao, clear, continuar, lista_vazia, sair, confirmar_exclusao, titulo, confirmar_gerarPDF
+from evento import temas, tipos_evento, listar_tipos_evento, listar_temas, adicionar_tema
+from evento import  cadastrar_evento, exibir_evento, listar_eventos, editar_evento, remover_evento, verificar_evento
+from usuario import temas_usuario, adicionar_tema
+from usuario import cadastrar_usuario, listar_usuarios, exibir_usuario, verificar_usuario, editar_usuario, remover_usuario
+from participante_evento import adicionar_participante, remover_participante
+from participante_evento import remover_usuario_cursos, remover_evento_usuarios, remover_participante
+from relatorio import listar_participantes_evento, temas_frequentes, participantes_mais_ativos
+from relatorio import exportar_lista_eventos, exportar_lista_usuarios, exportar_participante_ativo, exportar_participante_evento, exportar_temas_frequente
+
+from evento import eventos
+from usuario import usuarios
 
 
-from funcoes import cadastrar_evento, listar_eventos, editar_evento, buscar_evento, remover_evento, temas_frequentes, verificar_evento
-from funcoes import cadastrar_usuario, listar_usuarios, editar_usuario, buscar_usuario, remover_usuario
-from funcoes import adicionar_participante, remover_participante, listar_participantes_evento, participantes_mais_ativos
-from funcoes import exportar_lista_eventos, exportar_lista_usuarios, exportar_participante_evento, exportar_participante_ativo,exportar_temas_frequente
-from funcoes import verificar_usuarios, verificar_eventos
 def Menu2(nome):
     clear()
     print(f'''
@@ -27,24 +30,116 @@ def Menu2(nome):
 
 def Eventos(): 
     while True:
-        Menu2("   EVENTO    ", "ADICIONAR PARTICIPANTE  ", "REMOVER PARTICIPANTE    " )
+        Menu2("   EVENTO    ")
         
         op = validar_opcao(7)
         clear()
+
         if op == 1:
-            cadastrar_evento() 
+            titulo("CADASTRO DE EVENTO")
+                       
+            #TIPO EVENTO
+            listar_tipos_evento()
+            op = validar_opcao(4, 1)
+            tipo = tipos_evento[op-1]
+            
+            nome = input("NOME: ")
+            palestrante = input("PALESTRANTE: ")
+            max_parti = input("TOTAL PARTICIPANTES: ")
+            data = input("DATA(xx/xx/xxxx): ")
+            horario = input("HORÁRIO: ")
+            duracao = input("DURAÇÃO: ")
+            local = input("LOCAL: ")
+            
+
+            # TEMA EVENTO
+            listar_temas()
+            op = validar_opcao(len(temas))
+            if op == 0:
+                novo_tema = input("NOVO TEMA:")
+                op = adicionar_tema(novo_tema) 
+                tema = temas[op-1]
+            
+            cadastrar_evento(tipo, nome, palestrante, max_parti, data, horario, duracao, local, tema) 
+
 
         elif op == 2:
             listar_eventos()
 
+
         elif op == 3:
-            editar_evento()
+            titulo("EDITAR EVENTOS")
+            if lista_vazia(eventos):
+                print("NÃO HÁ EVENTOS CADASTRADOS PARA EDITAR!")
+            else:
+                titulo("EDITAR EVENTO")
+                cod = int(input("CÓD. EVENTO: "))
+                if verificar_evento(cod):
+                    exibir_evento(cod) 
+                    continuar() 
+                    editar_evento(cod)
+                else:
+                    print("EVENTO NÃO IDENTIFICADO, VERIFIQUE O CÓDIGO E TENTE NOVAMENTE!")
+
+           
 
         elif op == 4:
-            buscar_evento()
+            while True:
+                titulo("BUSCAR EVENTO")
+                if lista_vazia(eventos):
+                    print("NÃO HÁ EVENTOS CADASTRADOS PARA BUSCAR!")
+                    continuar()   
+                    return    
+                else:
+                    cod = int(input("CÓDIGO EVENTO: "))
+                    if verificar_evento(cod):
+                        exibir_evento(cod, True)
+                        if sair("BUSCAR EVENTO") == True:
+                            return
+                        else:
+                            clear()
+                    else: 
+                        print("$# EVENTO NÃO IDENTIFICADO, VERIFIQUE O CÓDIGO E TENTE NOVAMENTE! $#")
+                        if sair("BUSCAR EVENTO") == True:
+                            return
+                        else: 
+                            clear( )
 
         elif op == 5:
-            remover_evento()
+            while True:
+                titulo("REMOVER EVENTO")
+                if lista_vazia(eventos):
+                    print("NÃO HÁ EVENTOS CADASTRADOS PARA REMOVER!")
+                    continuar() 
+                    return 
+                else:
+                    cod = int(input("CÓDIGO EVENTO: "))
+                    if verificar_evento(cod):
+                        clear()
+                        titulo("REMOVER EVENTO")
+                        exibir_evento(cod)
+                        conf = confirmar_exclusao()
+                        if conf:
+                            try:  
+                                remover_evento_usuarios(cod)
+                                remover_evento(cod)
+                                print(f" EVENTO REMOVIDO COM SUCESSO! ")
+                                continuar()
+                            except:
+                                print("$#ERRO AO REMOVER O PARTICIPANTE! $#") 
+                                continuar()   
+                        else:
+                            print(f"OPERAÇÃO DE EXCLUSÃO CANCELADA! ")
+                            continuar()       
+                    else: 
+                        print("$# EVENTO NÃO IDENTIFICADO, VERIFIQUE O CÓDIGO E TENTE NOVAMENTE! $#")
+                        continuar()
+
+                if sair("REMOVER EVENTO") == True:
+                    return
+                else:
+                    clear()
+                    remover_evento()
 
         elif op == 6:
             adicionar_participante()
@@ -108,7 +203,6 @@ def Participantes():
                         clear()
 
         elif op == 5:
-            global usuarios
             titulo("REMOVER PARTICIPANTE")
             while True:
                 if lista_vazia(usuarios):
@@ -125,18 +219,13 @@ def Participantes():
                             try: # remover a mat das listas do curso
                                 cursos = usuarios[mat]['eventos']
                                 remover_usuario_cursos(cursos, mat)
-                            except:
-                                print("$# NÃO FOI POSSÍVEL REMOVER O PARTICIPANTE! $#")
-                                continuar() 
-                                return 
-                            try: 
                                 remover_usuario(mat)  
                                 print(f" USUÁRIO REMOVIDO COM SUCESSO! ")
                                 continuar()
-                                return
                             except:
-                                print("$#ERRO AO REMOVER O PARTICIPANTE! $#")
-                                continuar()            
+                                print("$# NÃO FOI POSSÍVEL REMOVER O PARTICIPANTE! $#")
+                                continuar() 
+                                return            
                         else:
                             print(f"OPERAÇÃO DE EXCLUSÃO CANCELADA! ")
                             continuar()    
@@ -150,39 +239,8 @@ def Participantes():
                     clear()
 
         elif op == 6:
-            print("_____ ADICIONAR PARTICIPANTE _____")
-            if lista_vazia(eventos):
-                print("NÃO HÁ EVENTOS CADASTRADOS PARA ADICIONAR PARTICIPANTE!")    
-                continuar()   
-            else:
-                cod = int(input("CÓDIGO EVENTO: "))
-                if verificar_evento(cod):
-                    exibir_evento(cod)
-                    continuar()
-                    clear()
-                    if lista_vazia(usuarios):
-                        print("NÃO HÁ USUÁRIOS CADASTRADOS PARA ADICIONAR!")    
-                        continuar()   
-                    else:
-                        mat = int(input("MATRÍCULA PARTICIPANTE: "))
-                        if verificar_usuario(mat):
-                            if consultar_participante(cod, mat):
-                                print("PARTICIPANTE JÁ ESTÁ MATRICULADO NESSE EVENTO!")
-                            else:
-                                exibir_usuario(mat)
-                                continuar()
-                                clear()
-                                adicionar_participante()
-                                return
-                        else:
-                            print("$# PARTICIPANTE NÃO IDENTIFICADO, VERIFIQUE A MATRÍCULA E TENTE NOVAMENTE! $#")
-                        continuar()
-                else: 
-                    print("$# EVENTO NÃO IDENTIFICADO, VERIFIQUE O CÓDIGO E TENTE NOVAMENTE! $#")
-                    continuar()
-
+            adicionar_participante()
             
-
         elif op == 7:
             remover_participante()
             
@@ -208,7 +266,8 @@ def Relatorios():
 
         if op == 1:
                 listar_eventos()
-                if verificar_eventos():
+                continuar()
+                if verificar_evento():
                     if confirmar_gerarPDF():
                         nome = input("NOME DO ARQUIVO:")
                         nome = nome.replace(" ", "").replace(".", "") + ".pdf"
@@ -218,7 +277,8 @@ def Relatorios():
 
         elif op == 2:
             listar_usuarios()
-            if verificar_usuarios():
+            continuar()
+            if verificar_usuario():
                 if confirmar_gerarPDF():
                     nome = input("NOME DO ARQUIVO: ")
                     nome = nome.replace(" ", "").replace(".", "") + ".pdf"
@@ -228,7 +288,8 @@ def Relatorios():
               
         elif op == 3:
             listar_participantes_evento()
-            if verificar_eventos():
+            continuar()
+            if verificar_evento():
                 if confirmar_gerarPDF() :
                     cod = int(input("CÓDIGO EVENTO: "))
                     if verificar_evento(cod):
@@ -242,7 +303,8 @@ def Relatorios():
         
         elif op == 4:
             participantes_mais_ativos()
-            if verificar_usuarios():
+            continuar()
+            if verificar_usuario():
                 if confirmar_gerarPDF():
                     nome = input("NOME DO ARQUIVO: ")
                     nome = nome.replace(" ", "").replace(".", "") + ".pdf"
@@ -250,9 +312,9 @@ def Relatorios():
                     continuar()
                    
         elif op == 5:
-            
             temas_frequentes()
-            if verificar_eventos():
+            continuar()
+            if verificar_evento():
                 if confirmar_gerarPDF():
                     nome = input("NOME DO ARQUIVO: ")
                     nome = nome.replace(" ", "").replace(".", "") + ".pdf"

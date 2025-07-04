@@ -1,8 +1,10 @@
-usuarios ={}
+usuarios = {1000 : {'nome' : 'Raiany Mendes', 'email' : 'raiany@gmail.com', 'temas' : ['Segurança', 'Análise de Dados'], 'eventos' : [1 , 3]},
+            1001 : {'nome' : 'Sara Mendes', 'email' : 'sara@gmail.com', 'temas' : ['Análise de Dados', 'Banco de Dados',], 'eventos' : [1 , 2]},
+            1002 : {'nome' : 'Yasmin Silva', 'email' : 'yasmin@gmail.com', 'temas' : ['Análise de Dados', 'Segurança',], 'eventos' : [1 , 2]}}
 
 from evento import mostrar_temas, temas
 from participante_evento import listar_eventos_matriculado
-from utilidades import validar_opcao, lista_vazia, clear, continuar, sair, titulo
+from utilidades import validar_opcao, clear, continuar, lista_vazia, titulo
 from functools import reduce
 
 

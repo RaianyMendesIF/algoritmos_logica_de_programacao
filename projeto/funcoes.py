@@ -7,23 +7,6 @@ from usuario import usuarios
 from reportlab.pdfgen import canvas  # pip install reportlab
 from reportlab.lib.pagesizes import A4 # A4 = (210*mm,297*mm)
 
-temas = [
-    'Desenvolvimento Web',
-    'Inteligência Artificial', 
-    'Segurança',  
-    'Banco de Dados', 
-    'Desenvolvimento Mobile', 
-    'Redes de Computadores',  
-    'Linguagens de Programação',
-    'Análise de Dados', 
-    'Ética e Privacidade',]
-
-
-tipos_evento = [
-    'Workshop',
-    'Maratona de Programação', 
-    'Palestra', 
-    'Minicurso',]
 
 def titulo(texto):
     print(f"------------------------- {texto} -------------------------")
@@ -56,28 +39,12 @@ def mostrar_tipos_evento():
     print("")
 
 
-def mostrar_temas():
-    print("TEMA")
-    for i,tema in enumerate(temas):
-        print(f'{i+1} - {tema}')
-    print("0 - Adicionar tema")
 
 # TEMAS
-def selecionar_tema():
-    mostrar_temas()
-    op = validar_opcao(len(temas))
-
-    if op == 0:
-        clear()
-        novo_tema = input("NOVO TEMA: ")
-        op = adicionar_tema(novo_tema)
-
-    return temas[op-1]
 
 
-def adicionar_tema(novo_tema):
-    temas.append(novo_tema)
-    return len(temas)
+
+
 
 #EVENTOS
 def cadastrar_evento():
@@ -430,300 +397,37 @@ def participantes_mais_ativos():
   
 
 # USUÁRIOS
-def listar_eventos_matriculado(mat):
-    evento = usuarios[mat]['eventos']
-    if lista_vazia(evento):
-        print("NÃO HÁ CURSOS MATRICULADOS!")
-    else:
-        print(" CURSOS MATRICULADOS")
-        for even in evento:
-            print(f" {even}  -  {eventos[even]['nome']}")
 
 
-def criar_lista_temas(tematica):
-    tema = []
-    for cod in tematica:
-        if cod > 0 and cod < len(temas):
-            tema.append(temas[cod-1])
-        if cod == 0:
-            adicionar_tema()
-    return tema
 
 
-def cadastrar_usuario():
-    titulo("CADASTRO DE USUÁRIO")
-    matricula = gerar_id_usuario()
-    nome = input("NOME COMPLETO: ")
-    email = input("E-MAIL: ")
-
-    tematicas = []
-    op = 'S'
-    while op.upper() == 'S':
-        tema = selecionar_tema()
-        if tema.index(tema):
-            print("CURSO JÁ ADICIONADO!")
-        else:
-            tematicas.append(tema)
-            [print(i, end='; ') for i in tematicas]
-        op = input("\nDESEJA ADICIONAR MAIS TEMAS?:(S/N)")
-    clear()
-    usuarios[matricula] = {'nome' : nome, 'email' : email, 'temas' : tematicas, 'eventos' : []}
-    print(f'USUÁRIO {nome} CADASTRADO COM SUCESSO! \nID: {matricula}')
-    continuar()
 
 
-def verificar_usuario(mat):
-    if mat in usuarios:
-        return True
 
 
-def exibir_usuario(mat, event=False):
-    print(f'''
- MATRÍCULA: {mat}   |   NOME: {usuarios[mat]['nome']}          
- E-MAIL: {usuarios[mat]['email']} 
- PREFERÊNCIA TEMÁTICA: {", ".join(usuarios[mat]['temas'])}
-''')
- 
-    if event == True:
-        listar_eventos_matriculado(mat)
-    else:
-        print('+----------------------------------------------------------------------------------------------------+')
 
 
-def listar_usuarios():
-    titulo("LISTAR USUÁRIOS")
-    if lista_vazia(usuarios):
-        print("NÃO HÁ PARTICIPANTES CADASTRADOS PARA LISTAR!")   
-    else:
-        for mat in usuarios:
-            exibir_usuario(mat)
-    continuar()
 
 
-def editar_usuario():
-    titulo("EDITAR USUÁRIO")
-    if lista_vazia(usuarios):
-        print("NÃO HÁ USUÁRIOS CADASTRADOS PARA EDITAR!")
-        continuar()
-    else:
-        titulo("EDITAR USUÁRIO")
-        mat = int(input("MATRÍCULA USUÁRIO: "))
-        if verificar_usuario(mat):
-            exibir_usuario(mat)
-            continuar()
-            while True:    
-                print(f'''
-+----------------------------+
-|           EDITAR           |
-+----------------------------+
-| 1 - NOME                   |
-| 2 - EMAIL                  |
-| 3 - PREFERÊNCIA TEMÁTICA   |   
-| 0 - SAIR                   |
-+----------------------------+   ''')
-
-                op = validar_opcao(3)
-                clear()
-                if op == 1:
-                    print("_____ EDITAR NOME _____")
-                    nome = input("NOVO NOME: ")
-                    clear()
-                    try:
-                        usuarios[mat]['nome'] = nome 
-                        print(f"NOME ALTERADO PARA {nome} COM SUCESSO!")
-                    except:
-                        print("$@ NÃO FOI POSSÍVEL ALTERAR O NOME DO PARTICIPANTE! @$")
-                    continuar()
-
-                if op == 2:
-                    print("_____ EDITAR E-MAIL _____")
-                    email = input("NOVO E-MAIL: ")
-                    clear()
-                    try:
-                        eventos[mat]['email'] = email 
-                        print(f"EMAIL ALTERADO PARA {email} COM SUCESSO!")
-                    except:
-                        print("$@ NÃO FOI POSSÍVEL ALTERAR O EMAIL DO PARTICIPANTE! @$")
-                    continuar()
-
-                if op == 3:
-                    print("_____ EDITAR PREFERÊNCIA TEMÁTICA _____")
-                    mostrar_temas()
-                    tematica = input("CÓD. PREFERÊNCIAS TEMÁTICA (cód. separados por vírgula ex: 1,5,...): ")
-                    tematica =[int(tema.strip()) for tema in tematica.split(",")]
-                    temas = criar_lista_temas(tematica)
-                    clear()
-
-                    try:
-                        eventos[mat]['temas'] = temas 
-                        print(f"PREFERÊNCIA TEMÁTICA ALTERADO PARA {[print(", ".join(temas))]} COM SUCESSO!")
-                    except:
-                        print("$@ NÃO FOI POSSÍVEL ALTERAR A PREFERÊNCIA TEMÁTICA DO PARTICIPANTE! @$")
-                    continuar()
-
-                if op == 0:
-                    return
-
-        else:
-                print("USUÁRIO NÃO IDENTIFICADO, VERIFIQUE O CÓDIGO E TENTE NOVAMENTE!")
-        continuar()
 
 
-def buscar_usuario():
-    titulo("BUSCAR USUÁRIO")
-    if lista_vazia(usuarios):
-             print("NÃO HÁ USUÁRIOS CADASTRADOS PARA BUSCAR!")
-    else:
-        while True:
-            matricula = int(input("MATRÍCULA USUÁRIO: "))
-            if matricula in usuarios:
-                exibir_usuario(matricula, True)
-            else:
-                print("$# PARTICIPANTE NÃO IDENTIFICADO, VERIFIQUE A MATRÍCULA E TENTE NOVAMENTE! #$")
-            if sair("BUSCAR EVENTO") == True:
-                    return
-            else:
-                clear()
-    continuar()
+
+
+
 
 
 def retornar_nome_usuario(matricula):
     return usuarios[matricula]['nome']
 
 
-def remover_usuario():
-    global usuarios
-    titulo("REMOVER PARTICIPANTE")
-    while True:
-        if lista_vazia(usuarios):
-            print("NÃO HÁ USUÁRIOS CADASTRADOS PARA REMOVER!")
-            continuar()
-            return      
-        else:
-            mat = int(input("MATRÍCULA PARTICIPANTE: "))
-            if verificar_usuario(mat):
-                clear()
-                exibir_usuario(mat)
-                op = input("CONFIRMAR EXCLUSÃO(S/N): ")
-                if confirmar_exclusao(op):
-                    try: # remover a mat das listas do curso
-                        cursos = usuarios[mat]['eventos']
-                        for cod in cursos:
-                            eventos[cod]['participantes'].remove(mat)
-                    except:
-                        print("$# NÃO FOI POSSÍVEL REMOVER O PARTICIPANTE! $#")
-                        continuar() 
-                        return 
-                    try:     
-                        del usuarios[mat]
-                        print(f" USUÁRIO REMOVIDO COM SUCESSO! ")
-                        continuar()
-                        return
-                    except:
-                        print("$#ERRO AO REMOVER O PARTICIPANTE! $#")            
-                else:
-                    print(f"OPERAÇÃO DE EXCLUSÃO CANCELADA! ")
-                    return       
-            else: 
-                print("$# USUÁRIO NÃO IDENTIFICADO, VERIFIQUE A MATRÍCULA E TENTE NOVAMENTE! $#")
 
-        if sair("REMOVER EVENTO") == True:
-            return
-        else:
-            clear()
-    continuar()
+    
 
 
 
-# MATRÍCULA
-
-def adicionar_participante():
-    print("_____ ADICIONAR PARTICIPANTE _____")
-    if lista_vazia(eventos):
-        print("NÃO HÁ EVENTOS CADASTRADOS PARA ADICIONAR PARTICIPANTE!")    
-        continuar()   
-    else:
-        cod = int(input("CÓDIGO EVENTO: "))
-        if verificar_evento(cod):
-            exibir_evento(cod)
-            continuar()
-            clear()
-            if lista_vazia(usuarios):
-                print("NÃO HÁ USUÁRIOS CADASTRADOS PARA ADICIONAR!")    
-                continuar()   
-            else:
-                mat = int(input("MATRÍCULA PARTICIPANTE: "))
-                if verificar_usuario(mat):
-                    if consultar_participante(cod, mat):
-                        print("PARTICIPANTE JÁ ESTÁ MATRICULADO NESSE EVENTO!")
-                    else:
-                        exibir_usuario(mat)
-                        continuar()
-                        clear()
-                        try:
-                            eventos[cod]['participantes'].append(mat)
-                            print("PARTICIPANTE MATRICULADO COM SUCESSO!")
-                            continuar()
-                            return
-                        except:
-                            print("$# NÃO FOI POSSÍVEL MATRICULAR O PARTICIPANTE! $#")
-                            continuar()
-
-                            return
-                else:
-                    print("$# PARTICIPANTE NÃO IDENTIFICADO, VERIFIQUE A MATRÍCULA E TENTE NOVAMENTE! $#")
-                continuar()
-        else: 
-            print("$# EVENTO NÃO IDENTIFICADO, VERIFIQUE O CÓDIGO E TENTE NOVAMENTE! $#")
-            continuar()
 
 
-def remover_participante():
-    print("_____ REMOVER PARTICIPANTE _____")
-    if lista_vazia(eventos):
-        print("NÃO HÁ EVENTOS CADASTRADOS PARA REMOVER PARTICIPANTES!")    
-        continuar()
-        return
-    else:
-        cod = int(input("CÓDIGO EVENTO: "))
-        if verificar_evento(cod):
-            exibir_evento(cod)
-            continuar()
-            if lista_vazia(eventos[cod]['participantes']):
-                print("NÃO HÁ PARTICIPANTES CADASTRADOS PARA REMOVER!")       
-            else:
-                while True:
-                    clear()
-                    exibir_evento(cod)
-                    mat = int(input("\nMATRÍCULA NOVO PARTICIPANTE: "))
-                    if verificar_usuario(mat):
-                        if consultar_participante(cod, mat):
-                            print("PARTICIPANTE JÁ ESTÁ MATRICULADO NESSE EVENTO!")
-                        else:
-                            exibir_usuario(mat)
-                            continuar()
-                            clear()
-                            try:
-                                eventos[cod]['participantes'].remove(mat)
-                                print(f"PARTICIPANTE REMOVIDO DO CURSO {eventos[cod]['nome']} COM SUCESSO!")
-                                continuar()
-                                return
-                            except:
-                                print("$# NÃO FOI POSSÍVEL REMOVER O PARTICIPANTE! $#")
-                                continuar()
 
-                                return
-                    else:
-                        print("$# PARTICIPANTE NÃO IDENTIFICADO, VERIFIQUE A MATRÍCULA E TENTE NOVAMENTE! $#")
-                    continuar()
-        else: 
-            print("$# EVENTO NÃO IDENTIFICADO, VERIFIQUE O CÓDIGO E TENTE NOVAMENTE! $#")
-    continuar()
-
-
-def confirmar_exclusao(op):
-    if op.upper() == "S":
-        return True
 
 
 

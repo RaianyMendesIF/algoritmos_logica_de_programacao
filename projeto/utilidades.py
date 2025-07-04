@@ -36,4 +36,19 @@ def confirmar_gerarPDF():
     if op.upper() == "S":
         clear()
         return True
-    
+
+def titulo(texto):
+    print(f"------------------------- {texto} -------------------------")
+
+def ler_inteiro(msg):
+    while True:
+        try:
+            entrada = int(input(msg))
+            return int(entrada)
+        except ValueError:
+            print("Entrada inválida. Por favor, digite um número inteiro.")
+
+def confirmar_exclusao():
+    op = input("CONFIRMAR EXCLUSÃO(S/N): ")
+    if op.upper() == "S":
+        return True

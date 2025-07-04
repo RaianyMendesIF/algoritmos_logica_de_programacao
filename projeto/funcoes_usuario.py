@@ -1,11 +1,8 @@
-usuarios = {1000 : {'nome' : 'Raiany Mendes', 'email' : 'raiany@gmail.com', 'temas' : ['Segurança', 'Análise de Dados'], 'eventos' : [1 , 3]},
-            1001 : {'nome' : 'Sara Mendes', 'email' : 'sara@gmail.com', 'temas' : ['Análise de Dados', 'Banco de Dados',], 'eventos' : [1 , 2]},
-            1002 : {'nome' : 'Yasmin Silva', 'email' : 'yasmin@gmail.com', 'temas' : ['Análise de Dados', 'Segurança',], 'eventos' : [1 , 2]}}
-
-from evento import mostrar_temas, temas
-from participante_evento import listar_eventos_matriculado
-from utilidades import validar_opcao, clear, continuar, lista_vazia, titulo
 from functools import reduce
+from utilidades import validar_opcao, clear, continuar, lista_vazia, titulo
+from dados.usuarios import usuarios
+from funcoes_tema import selecionar_tema
+from funcoes_evento import listar_eventos_matriculado
 
 
 def gerar_id_usuario():
@@ -41,22 +38,6 @@ def temas_usuario():
         clear()
     return tematicas
 
-# Mostrar e validar a escolha de um tem ou adicionar
-def selecionar_tema():
-    mostrar_temas()
-    op = validar_opcao(len(temas))
-
-    if op == 0:
-        clear()
-        novo_tema = input("NOVO TEMA: ")
-        op = adicionar_tema(novo_tema)
-
-    return temas[op-1]
-
-# Adicionar um tema 
-def adicionar_tema(novo_tema):
-    temas.append(novo_tema)
-    return len(temas)
 
 # Listar todos os usuários cadastrados
 def listar_usuarios():
@@ -77,7 +58,7 @@ def exibir_usuario(mat, event=False):
 ''')
  
     if event == True:
-        listar_eventos_matriculado(mat)
+        listar_eventos_matriculado(usuarios,mat)
 
     print('+----------------------------------------------------------------------------------------------------+')
 

@@ -1,15 +1,15 @@
 from utilidades import validar_opcao, clear, continuar, lista_vazia, sair, confirmar_exclusao, titulo, confirmar_gerarPDF
-from evento import temas, tipos_evento, listar_tipos_evento, listar_temas, adicionar_tema
-from evento import  cadastrar_evento, exibir_evento, listar_eventos, editar_evento, remover_evento, verificar_evento
-from usuario import temas_usuario, adicionar_tema
-from usuario import cadastrar_usuario, listar_usuarios, exibir_usuario, verificar_usuario, editar_usuario, remover_usuario
-from participante_evento import adicionar_participante, remover_participante
-from participante_evento import remover_usuario_cursos, remover_evento_usuarios, remover_participante
+from funcoes_evento import temas, tipos_evento, listar_tipos_evento, listar_temas, adicionar_tema
+from funcoes_evento import  cadastrar_evento, exibir_evento, listar_eventos, editar_evento, remover_evento, verificar_evento
+from funcoes_tema import adicionar_tema
+from funcoes_usuario import cadastrar_usuario, listar_usuarios, exibir_usuario, verificar_usuario, editar_usuario, remover_usuario, temas_usuario
+from funcoes_evento import adicionar_participante, remover_participante
+from funcoes_evento import remover_usuario_cursos, remover_evento_usuarios, remover_participante
 from relatorio import listar_participantes_evento, temas_frequentes, participantes_mais_ativos
 from relatorio import exportar_lista_eventos, exportar_lista_usuarios, exportar_participante_ativo, exportar_participante_evento, exportar_temas_frequente
 
-from evento import eventos
-from usuario import usuarios
+from dados.eventos import eventos
+from dados.usuarios import usuarios
 
 
 def Menu2(nome):
@@ -68,8 +68,8 @@ def Eventos():
 
 
         elif op == 3:
-            titulo("EDITAR EVENTOS")
             if lista_vazia(eventos):
+                titulo("EDITAR EVENTOS")
                 print("NÃO HÁ EVENTOS CADASTRADOS PARA EDITAR!")
             else:
                 titulo("EDITAR EVENTO")

@@ -1,7 +1,7 @@
 from utilidades import continuar, lista_vazia, titulo
-from evento import eventos, verificar_evento
-from participante_evento import listar_participantes
-from usuario import usuarios
+from funcoes_evento import verificar_evento, listar_participantes
+from dados.usuarios import usuarios
+from dados.eventos import eventos
 
 from collections import Counter #  contar a frequência de elementos em uma sequência
 from reportlab.pdfgen import canvas  # pip install reportlab

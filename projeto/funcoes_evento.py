@@ -1,31 +1,19 @@
+
+def listar_eventos_matriculado(usuario, mat):
+    evento = usuario[mat]['eventos']
+    if lista_vazia(evento):
+        print("NÃO HÁ CURSOS MATRICULADOS!")
+    else:
+        print(" CURSOS MATRICULADOS")
+        for even in evento:
+            print(f" {even}  -  {eventos[even]['nome']}")
+
+
+from funcoes_tema import temas, tipos_evento, listar_tipos_evento, listar_temas, adicionar_tema
 from functools import reduce
-from participante_evento import listar_participantes
 from utilidades import validar_opcao, clear, continuar, lista_vazia, titulo
-
-
-eventos = { 1: {'tipo' : 'Maratona de Programação', 'nome' : 'Programação em Python', 'max_participantes': 20, 'data' : '25/08/2025','hora' : '15:30','duracao' : '5h 45min',
-            'local' : 'IFMS - Campus Três Lagoas', 'tema' : 'Linguagens de Programação', 'palestrante' : 'Rogério Antoniassi', 'qnt_participantes' : 3, 'participantes' : [1002, 1001, 1000]},
-            2: {'tipo' : 'Workshop', 'nome' : 'Cybersegurança', 'max_participantes': 15, 'data' : '14/09/2025','hora' : '16:40','duracao' : '1h 45min',
-            'local' : 'IFMS - Campus Três Lagoas', 'tema' : 'Segurança', 'palestrante' : 'Evandro Rocha', 'qnt_participantes' : 2, 'participantes' : [1002, 1001]},
-            3: {'tipo' : 'Minicurso', 'nome' : 'MySQL', 'max_participantes': 20, 'data' : '19/07/2025','hora' : '14:45','duracao' : '1h 15min',
-            'local' : 'IFMS - Campus Três Lagoas', 'tema' : 'Banco de Dados', 'palestrante' : 'Maraisa Guerra', 'qnt_participantes' : 1, 'participantes' : [1000]}, } 
-
-temas = [
-    'Desenvolvimento Web',
-    'Inteligência Artificial', 
-    'Segurança',  
-    'Banco de Dados', 
-    'Desenvolvimento Mobile', 
-    'Redes de Computadores',  
-    'Linguagens de Programação',
-    'Análise de Dados', 
-    'Ética e Privacidade',]
-
-tipos_evento = [
-    'Workshop',
-    'Maratona de Programação', 
-    'Palestra', 
-    'Minicurso',]
+from funcoes_usuario import usuarios, verificar_usuario, exibir_usuario
+from dados.eventos import eventos
 
 
 def gerar_id_evento():
@@ -48,23 +36,6 @@ def cadastrar_evento(tipo, nome, palestrante, max_parti, data, horario, duracao,
         print(f'$@ NÃO FOI POSSÍVEL CADASTRAR O EVENTO {nome}! @$')
     continuar()
 
-# Temas  
-def listar_temas():
-    print("TEMA")
-    for i,tema in enumerate(temas):
-        print(f'{i+1} - {tema}')
-    print("0 - Adicionar tema")
-
-def adicionar_tema(novo_tema):
-    temas.append(novo_tema)
-    return len(temas)
-
-#Ttpos de eventos
-def listar_tipos_evento():
-    print("TIPO DE EVENTO ")
-    for i,tipo in enumerate(tipos_evento):
-        print(f'{i+1} - {tipo}')
-    print("")
 
 def exibir_evento(k, participante= False):
     print(f'''
@@ -229,6 +200,111 @@ def editar_evento(cod):
 def remover_evento(cod):
     del eventos[cod]
    
+def adicionar_participante():
+    print("_____ ADICIONAR PARTICIPANTE _____")
+    if lista_vazia(eventos):
+        print("NÃO HÁ EVENTOS CADASTRADOS PARA ADICIONAR PARTICIPANTE!")    
+        continuar()   
+    else:
+        cod = int(input("CÓDIGO EVENTO: "))
+        if verificar_evento(cod):
+            exibir_evento(cod)
+            continuar()
+            clear()
+            if lista_vazia(usuarios):
+                print("NÃO HÁ USUÁRIOS CADASTRADOS PARA ADICIONAR!")    
+                continuar()   
+            else:
+                mat = int(input("MATRÍCULA PARTICIPANTE: "))
+                if verificar_usuario(mat):
+                    if consultar_participante(cod, mat):
+                            print("PARTICIPANTE JÁ ESTÁ MATRICULADO NESSE EVENTO!")
+                    else:
+                        exibir_usuario(mat)
+                        continuar()
+                        clear()
+                        try:
+                            eventos[cod]['participantes'].append(mat)
+                            print("PARTICIPANTE MATRICULADO COM SUCESSO!")
+                            continuar()
+                            return
+                        except:
+                            print("$# NÃO FOI POSSÍVEL MATRICULAR O PARTICIPANTE! $#")
+                            continuar()
+                        return
+                else:
+                    print("$# PARTICIPANTE NÃO IDENTIFICADO, VERIFIQUE A MATRÍCULA E TENTE NOVAMENTE! $#")
+                continuar()
+        else: 
+            print("$# EVENTO NÃO IDENTIFICADO, VERIFIQUE O CÓDIGO E TENTE NOVAMENTE! $#")
+            continuar()
+
+def remover_participante():
+    print("_____ REMOVER PARTICIPANTE _____")
+    if lista_vazia(eventos):
+        print("NÃO HÁ EVENTOS CADASTRADOS PARA REMOVER PARTICIPANTES!")    
+        continuar()
+        return
+    else:
+        cod = int(input("CÓDIGO EVENTO: "))
+        if verificar_evento(cod):
+            exibir_evento(cod)
+            continuar()
+            if lista_vazia(eventos[cod]['participantes']):
+                print("NÃO HÁ PARTICIPANTES CADASTRADOS PARA REMOVER!")       
+            else:
+                while True:
+                    clear()
+                    exibir_evento(cod)
+                    mat = int(input("\nMATRÍCULA NOVO PARTICIPANTE: "))
+                    if verificar_usuario(mat):
+                        if consultar_participante(cod, mat):
+                            print("PARTICIPANTE JÁ ESTÁ MATRICULADO NESSE EVENTO!")
+                        else:
+                            exibir_usuario(mat)
+                            continuar()
+                            clear()
+                            try:
+                                eventos[cod]['participantes'].remove(mat)
+                                print(f"PARTICIPANTE REMOVIDO DO CURSO {eventos[cod]['nome']} COM SUCESSO!")
+                                continuar()
+                                return
+                            except:
+                                print("$# NÃO FOI POSSÍVEL REMOVER O PARTICIPANTE! $#")
+                                continuar()
+
+                                return
+                    else:
+                        print("$# PARTICIPANTE NÃO IDENTIFICADO, VERIFIQUE A MATRÍCULA E TENTE NOVAMENTE! $#")
+                    continuar()
+        else: 
+            print("$# EVENTO NÃO IDENTIFICADO, VERIFIQUE O CÓDIGO E TENTE NOVAMENTE! $#")
+    continuar()
+
+def remover_usuario_cursos(cursos, mat):
+    for cod in cursos:
+        eventos[cod]['participantes'].remove(mat)
+
+#Verificar se um participantes está mat. no evento
+def consultar_participante(cod, matricula): 
+    if matricula in eventos[cod]['participantes']:
+        return True
+    
+def listar_participantes(cod):
+    participantes = eventos[cod]['participantes']
+    print(f"      ID              NOME                      EMAIL               ")
+    for i,user in enumerate(participantes):
+       print(f" {i} - {user}  |  {usuarios[user]['nome']}   |   {usuarios[user]['email']}")
+
+def remover_evento_usuarios(cod):
+    try: # remover a mat das listas do curso
+        parti = eventos[cod]['participantes']
+        for mat in parti:
+            usuarios[mat]['eventos'].remove(cod)
+    except:
+        print("$# NÃO FOI POSSÍVEL REMOVER O EVENTO! $#")
+        continuar()  
+    
 def verificar_evento(cod):
     if cod in eventos:
         return eventos[cod]

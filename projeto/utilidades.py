@@ -1,5 +1,5 @@
 import os
-
+# validar_opcao, clear, continuar, lista_vazia, sair, confirmar_gerarPDF, titulo, confirmar_exclusao
 
 def validar_opcao(maximo, minimo=0):
     while True:
@@ -45,3 +45,4 @@ def confirmar_exclusao():
     op = input("CONFIRMAR EXCLUSÃO(S/N): ")
     if op.upper() == "S":
         return True
+    

@@ -29,11 +29,12 @@ def temas_usuario():
     op = 'S'
     while op.upper() == 'S':
         tema = selecionar_tema()
-        if tematicas.index(tema):
+        if tema in tematicas:
             print("CURSO JÁ ADICIONADO!")
         else:
             tematicas.append(tema)
-            [print("TEMAS: ",i, end='; ') for i in tematicas]
+            print("TEMAS: ", end='')
+            [print(i, end='; ') for i in tematicas]
         op = input("\nDESEJA ADICIONAR MAIS TEMAS?:(S/N)")
         clear()
     return tematicas

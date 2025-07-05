@@ -64,6 +64,7 @@ def listar_eventos():
 
 def editar_evento(cod):
     while True:    
+        exibir_evento(cod)
         print(f'''
 +----------------------------+
 |           EDITAR           |
@@ -225,6 +226,7 @@ def adicionar_participante():
                         clear()
                         try:
                             eventos[cod]['participantes'].append(mat)
+                            eventos[cod]['qnt_participantes'] = eventos[cod]['qnt_participantes'] + 1
                             print("PARTICIPANTE MATRICULADO COM SUCESSO!")
                             continuar()
                             return
@@ -284,6 +286,8 @@ def remover_participante():
 def remover_usuario_cursos(cursos, mat):
     for cod in cursos:
         eventos[cod]['participantes'].remove(mat)
+        eventos[cod]['qnt_participantes'] = eventos[cod]['qnt_participantes'] - 1
+
 
 #Verificar se um participantes está mat. no evento
 def consultar_participante(cod, matricula): 

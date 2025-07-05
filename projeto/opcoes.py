@@ -58,7 +58,7 @@ def Eventos():
             if op == 0:
                 novo_tema = input("NOVO TEMA:")
                 op = adicionar_tema(novo_tema) 
-                tema = temas[op-1]
+            tema = temas[op-1]
             
             cadastrar_evento(tipo, nome, palestrante, max_parti, data, horario, duracao, local, tema) 
 
@@ -267,30 +267,27 @@ def Relatorios():
         if op == 1:
                 listar_eventos()
                 continuar()
-                if verificar_evento():
-                    if confirmar_gerarPDF():
-                        nome = input("NOME DO ARQUIVO:")
-                        nome = nome.replace(" ", "").replace(".", "") + ".pdf"
-                        exportar_lista_eventos(nome)
-                        continuar() 
+                if confirmar_gerarPDF():
+                    nome = input("NOME DO ARQUIVO:")
+                    nome = nome.replace(" ", "").replace(".", "") + ".pdf"
+                    exportar_lista_eventos(nome)
+                    continuar() 
                       
 
         elif op == 2:
             listar_usuarios()
             continuar()
-            if verificar_usuario():
-                if confirmar_gerarPDF():
-                    nome = input("NOME DO ARQUIVO: ")
-                    nome = nome.replace(" ", "").replace(".", "") + ".pdf"
-                    exportar_lista_usuarios(nome)
-                    continuar()
+            if confirmar_gerarPDF():
+                nome = input("NOME DO ARQUIVO: ")
+                nome = nome.replace(" ", "").replace(".", "") + ".pdf"
+                exportar_lista_usuarios(nome)
+                continuar()
 
               
         elif op == 3:
             listar_participantes_evento()
             continuar()
-            if verificar_evento():
-                if confirmar_gerarPDF() :
+            if confirmar_gerarPDF():
                     cod = int(input("CÓDIGO EVENTO: "))
                     if verificar_evento(cod):
                         nome = input("NOME DO ARQUIVO: ")
@@ -304,22 +301,20 @@ def Relatorios():
         elif op == 4:
             participantes_mais_ativos()
             continuar()
-            if verificar_usuario():
-                if confirmar_gerarPDF():
-                    nome = input("NOME DO ARQUIVO: ")
-                    nome = nome.replace(" ", "").replace(".", "") + ".pdf"
-                    exportar_participante_ativo(nome)
-                    continuar()
+            if confirmar_gerarPDF():
+                nome = input("NOME DO ARQUIVO: ")
+                nome = nome.replace(" ", "").replace(".", "") + ".pdf"
+                exportar_participante_ativo(nome)
+                continuar()
                    
         elif op == 5:
             temas_frequentes()
             continuar()
-            if verificar_evento():
-                if confirmar_gerarPDF():
-                    nome = input("NOME DO ARQUIVO: ")
-                    nome = nome.replace(" ", "").replace(".", "") + ".pdf"
-                    exportar_temas_frequente(nome)
-                    continuar()
+            if confirmar_gerarPDF():
+                nome = input("NOME DO ARQUIVO: ")
+                nome = nome.replace(" ", "").replace(".", "") + ".pdf"
+                exportar_temas_frequente(nome)
+                continuar()
 
         elif op == 0:
             return
